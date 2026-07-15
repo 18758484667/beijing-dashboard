@@ -28,20 +28,29 @@
   .fallback{display:none;padding:18px 16px;font-size:13px;color:var(--muted);line-height:1.7;}
   /* 移动端概览：表格卡片，点击进详情页 */
   .mobile-view{display:none;}
-  .mcard{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden;}
-  .mcard:active{background:#fafafa;}
-  .mhead{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;border-bottom:1px solid var(--line);font-size:14px;font-weight:600;}
+  .mcard{display:block;text-decoration:none;color:inherit;background:var(--card);
+    border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden;
+    box-shadow:0 1px 3px rgba(20,30,60,.05);transition:transform .16s ease,box-shadow .16s ease;}
+  .mcard:active{transform:scale(.992);box-shadow:0 3px 12px rgba(20,30,60,.1);}
+  .mhead{display:flex;align-items:center;justify-content:space-between;
+    padding:12px 14px;font-size:14.5px;font-weight:700;
+    border-left:4px solid var(--mc,#2E86DE);background:#fafbfd;
+    border-bottom:1px solid var(--line);}
   .mhead .lt{display:flex;align-items:center;gap:8px;}
-  .mhead .go{font-size:11.5px;color:var(--cool);font-weight:400;}
+  .mhead .dot{width:8px;height:8px;}
+  .mhead .go{font-size:11px;font-weight:600;color:var(--mc,#2E86DE);white-space:nowrap;}
   .mtbl{width:100%;border-collapse:collapse;font-size:12.5px;}
-  .mtbl td{padding:7px 13px;border-bottom:1px solid #f0f0f0;vertical-align:middle;}
+  .mtbl td{padding:8px 14px;border-bottom:1px solid #f3f4f6;vertical-align:middle;}
   .mtbl tr:last-child td{border-bottom:none;}
-  .mtbl td:first-child{font-weight:600;white-space:nowrap;}
-  .mtbl .pri{color:var(--accent);font-weight:700;white-space:nowrap;}
-  .mtbl .mut{color:var(--muted);font-size:11.5px;}
-  .mtbl tr.sec td{background:#fafafa;font-size:11px;color:var(--muted);font-weight:600;}
-  .mtbl .warn{color:#b8860b;font-weight:600;}
-  .mtbl .bad{color:#b4452f;font-weight:600;}
+  .mtbl td:first-child{font-weight:600;white-space:nowrap;color:var(--ink);}
+  .mtbl .pri{font-size:14px;font-weight:800;color:var(--accent);white-space:nowrap;}
+  .mtbl .mut{color:var(--muted);font-size:11.5px;text-align:right;}
+  .mtbl tr.sec td{background:#f5f8fc;font-size:10.5px;color:#5a6a7a;font-weight:700;
+    letter-spacing:.4px;border-bottom:1px solid #eaf0f7;}
+  .mtbl .pill{display:inline-block;font-size:10.5px;font-weight:700;border-radius:6px;padding:1px 7px;line-height:1.7;}
+  .mtbl .warn{background:#fff3df;color:#a8760e;}
+  .mtbl .bad{background:#fdeae7;color:#b4452f;}
+  .mtbl .ok{background:#e8f5ee;color:#2e7d54;}
   footer{font-size:12px;color:var(--muted);line-height:1.8;margin-top:6px;}
   footer .tag{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:6px;padding:2px 8px;margin-right:6px;color:var(--ink);}
   /* 移动端：表格概览，点击进详情 */
@@ -66,8 +75,8 @@
 
   <!-- ===== 移动端概览：表格卡片，点击跳转详情页 ===== -->
   <div class="mobile-view">
-    <a class="mcard" href="beijing-2026-hotels-spec.html">
-      <div class="mhead"><span class="lt"><span class="dot" style="background:var(--accent)"></span>指定酒店 + 每日推荐</span><span class="go">完整详情 ↗</span></div>
+    <a class="mcard" style="--mc:#FF5C1A" href="beijing-2026-hotels-spec.html">
+      <div class="mhead"><span class="lt"><span class="dot" style="background:#FF5C1A"></span>指定酒店 + 每日推荐</span><span class="go">完整详情 ↗</span></div>
       <table class="mtbl">
         <tr><td>东方饭店</td><td class="pri">¥502</td><td class="mut">前门·虎坊桥530m·洗衣✓</td></tr>
         <tr><td>京伦饭店</td><td>¥498参考</td><td class="mut">国贸</td></tr>
@@ -80,8 +89,8 @@
       </table>
     </a>
 
-    <a class="mcard" href="beijing-2026-booking.html">
-      <div class="mhead"><span class="lt"><span class="dot" style="background:var(--cool)"></span>景点预约时间表</span><span class="go">完整详情 ↗</span></div>
+    <a class="mcard" style="--mc:#2E86DE" href="beijing-2026-booking.html">
+      <div class="mhead"><span class="lt"><span class="dot" style="background:#2E86DE"></span>景点预约时间表</span><span class="go">完整详情 ↗</span></div>
       <table class="mtbl">
         <tr><td>故宫</td><td class="pri">20:00抢</td><td class="mut">提前7天·最难抢</td></tr>
         <tr><td>国博</td><td>17:00</td><td class="mut">提前7天·免费</td></tr>
@@ -89,13 +98,13 @@
         <tr><td>天坛</td><td>21:00</td><td class="mut">提前7天</td></tr>
         <tr><td>颐和园</td><td>21:00</td><td class="mut">提前7天</td></tr>
         <tr><td>恭王府</td><td>20:00</td><td class="mut">提前10天</td></tr>
-        <tr><td>北大</td><td>08:00</td><td class="warn">截止8/16⚠️</td></tr>
-        <tr><td>清华</td><td>08:00</td><td class="bad">已闭园✗</td></tr>
+        <tr><td>北大</td><td>08:00</td><td><span class="pill warn">截止8/16⚠️</span></td></tr>
+        <tr><td>清华</td><td>08:00</td><td><span class="pill bad">已闭园✗</span></td></tr>
       </table>
     </a>
 
-    <a class="mcard" href="beijing-2026-7-8-weather.html">
-      <div class="mhead"><span class="lt"><span class="dot" style="background:var(--cool)"></span>天气 / 降雨量</span><span class="go">完整详情 ↗</span></div>
+    <a class="mcard" style="--mc:#0EA5A4" href="beijing-2026-7-8-weather.html">
+      <div class="mhead"><span class="lt"><span class="dot" style="background:#0EA5A4"></span>天气 / 降雨量</span><span class="go">完整详情 ↗</span></div>
       <table class="mtbl">
         <tr><td>今日</td><td class="pri">34℃/25℃</td><td class="mut">降雨0.8mm</td></tr>
         <tr><td>7月累计</td><td>~800mm</td><td class="mut">偏多</td></tr>
@@ -103,8 +112,8 @@
       </table>
     </a>
 
-    <a class="mcard" href="beijing-2026-myflights.html">
-      <div class="mhead"><span class="lt"><span class="dot" style="background:var(--green)"></span>机票价格（指定6航班）</span><span class="go">完整详情 ↗</span></div>
+    <a class="mcard" style="--mc:#2E8B57" href="beijing-2026-myflights.html">
+      <div class="mhead"><span class="lt"><span class="dot" style="background:#2E8B57"></span>机票价格（指定6航班）</span><span class="go">完整详情 ↗</span></div>
       <table class="mtbl">
         <tr class="sec"><td colspan="3">去程 8/15 宁波→北京（大兴）</td></tr>
         <tr><td>KN5996 中联航</td><td class="pri">¥480</td><td class="mut">✓确认</td></tr>
