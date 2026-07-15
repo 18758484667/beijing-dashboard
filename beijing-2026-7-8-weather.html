@@ -24,7 +24,8 @@
   .stat .v{font-size:20px;font-weight:600;margin-top:4px;}
   .stat .v small{font-size:12px;color:var(--muted);font-weight:400;}
   .chart-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 16px 8px;position:relative;}
-  svg{width:100%;height:auto;display:block;}
+  .svg-scroll{position:relative;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  svg{width:100%;min-width:660px;height:auto;display:block;}
   .legend{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:8px 0 4px;font-size:13px;color:var(--muted);}
   .legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px;}
   .legend .bar{display:inline-block;width:10px;height:11px;border-radius:2px;vertical-align:middle;margin-right:6px;}
@@ -36,6 +37,18 @@
   #tip .hi{color:#FF9B6B;} #tip .lo{color:#7FB6F2;} #tip .pr{color:#A9D2F5;}
   #tip .src{color:#888;font-size:10px;}
   @media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr);}}
+  /* 移动端：padding 收敛、统计卡 2 列、字号优化（SVG 横滑保持清晰） */
+  @media(max-width:680px){
+    body{padding:18px 10px 40px;}
+    h1{font-size:19px;}
+    .sub{font-size:12px;margin-bottom:14px;line-height:1.55;}
+    .stats{grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px;}
+    .stat{padding:11px 12px;}
+    .stat .v{font-size:18px;}
+    .chart-card{padding:14px 8px 8px;border-radius:12px;}
+    .legend{font-size:12px;gap:10px 12px;}
+    .note{font-size:11px;}
+  }
 </style>
 </head>
 <body>
@@ -58,8 +71,10 @@
   </div>
 
   <div class="chart-card">
+   <div class="svg-scroll">
     <svg id="chart" viewBox="0 0 680 470" preserveAspectRatio="xMidYMid meet"></svg>
     <div id="tip"></div>
+   </div>
     <div class="legend">
       <span><i style="background:var(--accent)"></i>最高气温</span>
       <span><i style="background:var(--cool)"></i>最低气温</span>

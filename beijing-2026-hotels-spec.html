@@ -43,6 +43,35 @@
   footer{color:var(--mut);font-size:12px;margin-top:18px;line-height:1.7}
   footer b{color:var(--ink)}
   .warn{background:#fff8ec;border:1px solid #f0dcae;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#7a5b13;margin-top:8px}
+  /* ===== 移动端：表格→卡片堆叠、推荐单列、字号收敛 ===== */
+  @media(max-width:680px){
+    .wrap{padding:14px 11px 40px;}
+    h1{font-size:19px;}
+    header{flex-direction:column;align-items:flex-start;gap:4px;padding-bottom:9px;}
+    section{padding:13px 12px 15px;margin:12px 0;}
+    h2{font-size:15.5px;}
+    /* 指定酒店表转卡片 */
+    table,tbody,tr,td{display:block;}
+    thead{display:none;}
+    tbody tr{background:#fcfdff;border:1px solid var(--line);border-radius:10px;margin-bottom:11px;padding:10px 13px;box-shadow:0 1px 2px rgba(20,40,80,.03);}
+    td{border:none;border-bottom:1px dashed #eef2f7;padding:8px 0;font-size:13px;}
+    td:last-child{border-bottom:none;}
+    td::before{display:block;color:var(--mut);font-size:11px;font-weight:600;margin-bottom:3px;}
+    tbody tr td:nth-child(1)::before{content:"酒店";}
+    tbody tr td:nth-child(2)::before{content:"位置";}
+    tbody tr td:nth-child(3)::before{content:"近期最低价（来源）";}
+    tbody tr td:nth-child(4)::before{content:"评分";}
+    tbody tr td:nth-child(5)::before{content:"洗衣";}
+    tbody tr td:nth-child(6)::before{content:"距地铁";}
+    tbody tr td:nth-child(7)::before{content:"提示";}
+    /* 推荐卡片单列 */
+    .cards{grid-template-columns:1fr;gap:11px;}
+    .hcard{padding:12px 13px;}
+    .hcard .price{font-size:17px;}
+    .hcard h3{font-size:14.5px;}
+    .note{font-size:12px;}
+    footer{font-size:11.5px;}
+  }
 </style>
 </head>
 <body>

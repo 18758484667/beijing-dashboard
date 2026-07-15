@@ -27,6 +27,17 @@
   .fallback{display:none;padding:18px 16px;font-size:13px;color:var(--muted);line-height:1.7;}
   footer{font-size:12px;color:var(--muted);line-height:1.8;margin-top:6px;}
   footer .tag{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:6px;padding:2px 8px;margin-right:6px;color:var(--ink);}
+  /* 移动端：标题与链接换行、字号收敛 */
+  @media(max-width:680px){
+    body{padding:14px 10px 40px;}
+    h1{font-size:19px;}
+    .bar{flex-wrap:wrap;gap:6px;padding:11px 13px;}
+    .bar .t{font-size:14px;gap:7px;}
+    .bar a{font-size:11px;}
+    .panel{border-radius:12px;}
+    footer{font-size:11.5px;}
+    footer .tag{font-size:11px;padding:2px 7px;}
+  }
 </style>
 </head>
 <body>
@@ -85,19 +96,43 @@
 <script>
   const n = new Date();
   const wd = ['日','一','二','三','四','五','六'][n.getDay()];
-  document.getElementById('today').textContent = n.getFullYear() + '年' + (n.getMonth()+1) + '月' + n.getDate() + '日（周' + wd + '）';
+  document.getElementById('today').textContent = n.getFullYear() + '年' + (n.getMonth()+1) + '月' + (n.getDate()) + '日（周' + wd + '）';
 
-  // 若内嵌框加载失败（如预览环境禁用 file iframe），显示兜底链接
-  document.querySelectorAll('.panel iframe').forEach(f=>{
-    f.addEventListener('error', ()=>{ f.style.display='none'; f.nextElementSibling.style.display='block'; });
-    // 3 秒后若仍未加载（contentDocument 为空且非跨域），给出兜底
+  // iframe 高度自适应（同域可读子页真实高度，消除移动端空白/截断）
+  function fitFrame(f){
+    try{
+      const d=f.contentDocument;
+      if(!d||!d.body) return;
+      const h=Math.max(d.body.scrollHeight, d.documentElement?d.documentElement.scrollHeight:0);
+      if(h>120) f.style.height=(h+6)+'px';
+    }catch(e){ /* 跨域：保留 inline 固定高度作 fallback */ }
+  }
+  const frames=document.querySelectorAll('.panel iframe');
+  let rT;
+  window.addEventListener('resize',()=>{clearTimeout(rT);rT=setTimeout(()=>frames.forEach(fitFrame),120);});
+  frames.forEach(f=>{
+    f.addEventListener('load',()=>{
+      fitFrame(f);
+      // 子页 JS 动态生成内容，多次重测确保高度准确
+      setTimeout(()=>fitFrame(f),350);
+      setTimeout(()=>fitFrame(f),900);
+      setTimeout(()=>fitFrame(f),2000);
+      try{
+        const d=f.contentDocument;
+        if(d&&d.body&&window.ResizeObserver){
+          new ResizeObserver(()=>fitFrame(f)).observe(d.body);
+        }
+      }catch(e){}
+    });
+    // 加载失败兜底链接
+    f.addEventListener('error',()=>{f.style.display='none';f.nextElementSibling.style.display='block';});
     setTimeout(()=>{
       try{
-        if(!f.contentDocument || f.contentDocument.body && f.contentDocument.body.childElementCount===0){
-          f.style.display='none'; f.nextElementSibling.style.display='block';
+        if(!f.contentDocument || (f.contentDocument.body && f.contentDocument.body.childElementCount===0)){
+          f.style.display='none';f.nextElementSibling.style.display='block';
         }
-      }catch(e){ /* 跨域无法读取，视为已加载 */ }
-    }, 3000);
+      }catch(e){}
+    },3500);
   });
 </script>
 </body>

@@ -25,6 +25,10 @@
   .panel h2{font-size:15px;margin:0 0 2px}
   .panel .note{font-size:12px;color:var(--sub);margin:0 0 6px}
   svg{width:100%;height:auto;display:block;overflow:visible}
+  .svg-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .svg-scroll svg{width:100%;min-width:720px;height:auto;display:block;overflow:visible}
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .table-scroll table{min-width:560px;}
   .tip{position:fixed;pointer-events:none;background:#1f2933;color:#fff;font-size:12px;
     padding:6px 9px;border-radius:6px;opacity:0;transition:opacity .12s;z-index:9;white-space:nowrap}
   table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
@@ -37,6 +41,18 @@
   .foot b{color:var(--ink)}
   .tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:20px;
     background:#e3fafc;color:#0c8599;margin-left:6px;vertical-align:middle}
+  /* 移动端：padding 收敛、字号优化（SVG/表格横滑保持清晰） */
+  @media(max-width:680px){
+    body{padding:18px 12px 40px;}
+    h1{font-size:19px;}
+    .meta{font-size:12px;line-height:1.55;}
+    .panel{padding:14px 12px 8px;margin-bottom:14px;border-radius:12px;}
+    .panel h2{font-size:14.5px;}
+    .legend{font-size:11.5px;gap:10px 12px;}
+    .foot{font-size:11.5px;line-height:1.65;padding-top:12px;}
+    table{font-size:12.5px;}
+    th,td{padding:6px 7px;}
+  }
 </style>
 </head>
 <body>
@@ -53,7 +69,7 @@
       <span><i style="background:var(--mu)"></i>MU5150 东航</span>
       <span><i style="background:var(--user)"></i>你优先日 8/15</span>
     </div>
-    <svg id="dep" viewBox="0 0 760 300"></svg>
+    <div class="svg-scroll"><svg id="dep" viewBox="0 0 760 300"></svg></div>
   </div>
 
   <div class="panel">
@@ -65,13 +81,13 @@
       <span><i style="background:var(--ca35)"></i>CA1535 国航(首都)</span>
       <span><i style="background:var(--user)"></i>你优先日 8/21</span>
     </div>
-    <svg id="ret" viewBox="0 0 760 300"></svg>
+    <div class="svg-scroll"><svg id="ret" viewBox="0 0 760 300"></svg></div>
   </div>
 
   <div class="panel">
     <h2>已知价格明细</h2>
     <p class="note">空白＝该日期暂无数据，每日自动任务会补齐</p>
-    <table>
+    <div class="table-scroll"><table>
       <thead>
         <tr><th class="flight">去程航班</th><th>8/12</th><th>8/13</th><th>8/14</th><th>8/15</th><th>8/16</th><th>8/17</th><th>8/18</th></tr>
       </thead>
@@ -80,8 +96,8 @@
         <tr><td class="flight">NS8028 河北航</td><td>¥420</td><td></td><td>¥498</td><td>¥420</td><td>¥420</td><td>¥420</td><td>¥420</td></tr>
         <tr><td class="flight">MU5150 东航</td><td>¥760</td><td></td><td>¥751</td><td>¥610</td><td>¥750</td><td>¥760</td><td>¥750</td></tr>
       </tbody>
-    </table>
-    <table style="margin-top:12px">
+    </table></div>
+    <div class="table-scroll"><table style="margin-top:12px">
       <thead>
         <tr><th class="flight">回程航班</th><th>8/18</th><th>8/19</th><th>8/20</th><th>8/21</th><th>8/22</th><th>8/23</th><th>8/24</th></tr>
       </thead>
@@ -90,7 +106,7 @@
         <tr><td class="flight">CA1541 国航(首都)</td><td>¥1440</td><td>¥1440</td><td>¥1290</td><td>¥1290</td><td>¥700</td><td>¥700</td><td>¥1440</td></tr>
         <tr><td class="flight">CA1535 国航(首都)</td><td>¥850</td><td>¥850</td><td>¥850</td><td>¥850</td><td>¥700</td><td>¥750</td><td>¥850</td></tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
 
   <div class="foot">
