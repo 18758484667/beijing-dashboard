@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北京 2026 年 7–8 月 降雨量预测</title>
+<style>
+  :root{
+    --bg:#F5F5F5; --card:#FFFFFF; --ink:#1A1A1A; --muted:#8A8A8A;
+    --accent:#FF5C1A; --cool:#2E86DE; --line:#E2E2E2; --band:#FBF0EA;
+    --act:#1B5E96; --fcst:#4A9ED6; --ref:#9ECAF2; --stat:#D0E4F5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;}
+  body{background:var(--bg);color:var(--ink);padding:32px 16px;display:flex;justify-content:center;}
+  .wrap{width:100%;max-width:900px;}
+  h1{font-size:22px;letter-spacing:.5px;margin-bottom:4px;}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:20px;line-height:1.5;}
+  .zone-badge{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);padding:5px 10px;border-radius:6px;background:var(--card);border:1px solid var(--line);}
+  .badge .sw{width:14px;height:10px;border-radius:2px;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;}
+  .stat .k{font-size:12px;color:var(--muted);}
+  .stat .v{font-size:20px;font-weight:600;margin-top:4px;}
+  .stat .v small{font-size:12px;color:var(--muted);font-weight:400;}
+  .chart-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 16px 8px;position:relative;}
+  svg{width:100%;height:auto;display:block;}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:8px 0 4px;font-size:13px;color:var(--muted);}
+  .legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px;}
+  .legend .bar{display:inline-block;width:10px;height:11px;border-radius:2px;vertical-align:middle;margin-right:6px;}
+  .note{font-size:11px;color:var(--muted);text-align:center;margin-top:6px;line-height:1.6;}
+  #tip{position:absolute;pointer-events:none;background:rgba(26,26,26,.92);color:#fff;
+       font-size:12px;line-height:1.5;padding:8px 10px;border-radius:8px;white-space:nowrap;
+       transform:translate(-50%,-115%);opacity:0;transition:opacity .12s;z-index:5;}
+  #tip b{font-size:13px;}
+  #tip .hi{color:#FF9B6B;} #tip .lo{color:#7FB6F2;} #tip .pr{color:#A9D2F5;}
+  #tip .src{color:#888;font-size:10px;}
+  @media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>北京降雨量预测 · 2026年7–8月</h1>
+  <div class="sub"><strong>7/1–7/14 实况</strong>（tianqi24，累计约800mm）→ <strong>7/15–7/25 短期预报</strong>（tianqi.com）→ 7/26–8/8 <strong>远期参考</strong>（占位数据，不可靠）→ 8/9–31 <strong>统计外推</strong>（基于2025模式缩放，非真实预报）。注：7/10 雨量经源站修订为 139.75mm（原44.68）；7/11–14 气温因 tianqi24 实况气温接口异常，以预报回填，降雨为实况。</div>
+
+  <div class="zone-badge">
+    <div class="badge"><span class="sw" style="background:var(--act)"></span> 实况 7/1–14</div>
+    <div class="badge"><span class="sw" style="background:var(--fcst)"></span> 短期预报 7/15–25</div>
+    <div class="badge"><span class="sw" style="background:var(--ref);border:1px dashed #999"></span> 远期参考 7/26–8/8</div>
+    <div class="badge"><span class="sw" style="background:var(--stat);border:1px dashed #CCC"></span> 统计外推 8/9–31</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="k">7/1–14 实况降雨</div><div class="v">800<small>mm</small></div></div>
+    <div class="stat"><div class="k">7/15–25 预报降雨</div><div class="v">~85<small>mm</small></div></div>
+    <div class="stat"><div class="k">7月 实况+预报</div><div class="v">~885<small>mm</small></div></div>
+    <div class="stat"><div class="k">汛期展望(6–9月)</div><div class="v">510–590<small>mm</small></div></div>
+  </div>
+
+  <div class="chart-card">
+    <svg id="chart" viewBox="0 0 680 470" preserveAspectRatio="xMidYMid meet"></svg>
+    <div id="tip"></div>
+    <div class="legend">
+      <span><i style="background:var(--accent)"></i>最高气温</span>
+      <span><i style="background:var(--cool)"></i>最低气温</span>
+      <span><span class="bar" style="background:var(--act)"></span>降雨(实况)</span>
+      <span><span class="bar" style="background:var(--fcst)"></span>降雨(预报)</span>
+      <span><span class="bar" style="background:var(--ref)"></span>远期参考</span>
+      <span><span class="bar" style="background:var(--stat)"></span>统计外推</span>
+    </div>
+    <div class="note">上图：气温（实况=实线，预报/参考/外推=虚线）。下图：降雨柱（深→浅=可信度递减）。<br>▸ 7/26–8/8 为 30天预报占位数据（全"多云"），不应视为真实预报。 ▸ 8/9–31 为 2025 同期模式 ×0.25 缩放，具体日期毫米数无预测意义。</div>
+  </div>
+</div>
+
+<script>
+// ===== 气温数据 =====
+const aHi=[36,37,37,37,34,35,34,34,35,30,30,29,34,34];
+const aLo=[22,24,26,25,24,22,23,24,26,25,25,25,25,26];
+const fHi=[37,34,33,31,32,31,31,29,30,35,36];
+const fLo=[27,26,26,24,23,24,24,24,22,24,27];
+const f2Hi=[33,33,33,33,33,33,33,33,33,32,32,32,32,32];
+const f2Lo=[25,25,25,25,25,25,25,25,25,24,24,24,24,24];
+const pHi=[34,34,32,31,30,32,32,30,33,32,27,32,31,33,29,27,33,32,23,28,28,30,31];
+const pLo=[24,25,25,23,23,24,25,25,25,25,25,25,25,24,22,22,23,22,21,23,21,23,23];
+const hi=aHi.concat(fHi,f2Hi,pHi), lo=aLo.concat(fLo,f2Lo,pLo);
+
+// ===== 降雨量 =====
+const aPrec=[6.14,0.90,52.63,76.00,76.00,2.60,41.27,15.43,36.35,139.75,303.25,48.65,0.05,0.82];
+const fPrec=[0,0,5,5,5,15,15,5,5,0,35];
+const f2Prec=[0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+const pPrec=[0.2,0,0.5,30.7,2.2,19.7,4.3,5.2,1.1,0.2,26.6,10.5,10.2,1.1,1.4,0.2,0.3,3.9,50.7,0.3,0.3,0.1,12.8];
+const prec=aPrec.concat(fPrec,f2Prec,pPrec);
+
+const zoneA=14, zoneB=25, zoneC=39, zoneD=62;
+const N=prec.length;
+
+function zone(i){
+  if(i<zoneA)return'act';
+  if(i<zoneB)return'fcst';
+  if(i<zoneC)return'ref';
+  return'stat';
+}
+function zoneLabel(i){
+  const z=zone(i);
+  if(z==='act')return'实况';
+  if(z==='fcst')return'预报';
+  if(z==='ref')return'远期参考(占位)';
+  return'统计外推(非预报)';
+}
+
+const W=680,H=470,PADL=42,PADR=46,PADT=20;
+const x0=PADL,x1=W-PADR;
+const tMin=18,tMax=40, y0=PADT, y1t=320;
+const pBase=442, pTop=350, pMax=320;
+const X=i=>x0+(i/(N-1))*(x1-x0);
+const Y=t=>y1t-((t-tMin)/(tMax-tMin))*(y1t-y0);
+const YP=m=>pBase-(m/pMax)*(pBase-pTop);
+const bw=(x1-x0)/(N-1);
+
+const svg=document.getElementById('chart');
+const NS='http://www.w3.org/2000/svg';
+function el(n,a){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;}
+
+// 气温网格 + 左轴
+for(let t=tMin;t<=tMax;t+=4){
+  svg.appendChild(el('line',{x1:x0,y1:Y(t),x2:x1,y2:Y(t),stroke:'#EEE','stroke-width':1}));
+  const tx=el('text',{x:x0-8,y:Y(t)+4,'text-anchor':'end','font-size':11,fill:'#8A8A8A'});
+  tx.textContent=t+'°';svg.appendChild(tx);
+}
+// 降雨右轴
+[0,50,100,150,200,250,300].forEach(m=>{
+  const tx=el('text',{x:x1+8,y:YP(m)+4,'text-anchor':'start','font-size':10,fill:'#2E86DE'});
+  tx.textContent=m;svg.appendChild(tx);
+});
+
+// 日期标签
+function dl(i){const d=i+1;return i<31?'7/'+d:'8/'+(d-31);}
+for(let i=0;i<N;i+=5){
+  const tx=el('text',{x:X(i),y:H-14,'text-anchor':'middle','font-size':10,fill:'#1A1A1A'});
+  tx.textContent=dl(i);svg.appendChild(tx);
+  svg.appendChild(el('line',{x1:X(i),y1:pBase+3,x2:X(i),y2:pBase+6,stroke:'#CCC','stroke-width':1}));
+}
+[30,61].forEach(i=>{if(i>=N)return;const tx=el('text',{x:X(i),y:H-14,'text-anchor':'middle','font-size':10,fill:'#1A1A1A','font-weight':600});tx.textContent=dl(i);svg.appendChild(tx);});
+
+// 月份标签
+[{x:X(15),t:'7月'},{x:X(46),t:'8月'}].forEach(l=>{const tx=el('text',{x:l.x,y:y0-6,'text-anchor':'middle','font-size':11,fill:'#1A1A1A','font-weight':600});tx.textContent=l.t;svg.appendChild(tx);});
+svg.appendChild(el('line',{x1:X(30.5),y1:y0,x2:X(30.5),y2:pBase,stroke:'#CCC','stroke-width':1,'stroke-dasharray':'4 4'}));
+
+// 区域分隔线
+[zoneA-0.5, zoneB-0.5, zoneC-0.5].forEach(i=>{
+  const dashed=i===zoneC-0.5?'6 3':'2 4';
+  svg.appendChild(el('line',{x1:X(i),y1:y0,x2:X(i),y2:pBase,stroke:i===zoneC-0.5?'#D0D0D0':'#F0D0A0','stroke-width':1.5,'stroke-dasharray':dashed,opacity:.7}));
+});
+
+// 区域标签
+[{x:X(4.5),t:'实况',c:'#1B5E96'},{x:X(18),t:'预报',c:'#4A9ED6'},{x:X(32),t:'远参',c:'#999'},{x:X(50),t:'外推',c:'#BBB'}].forEach(l=>{
+  const tx=el('text',{x:l.x,y:y0-14,'text-anchor':'middle','font-size':10,fill:l.c});
+  tx.textContent=l.t;svg.appendChild(tx);
+});
+
+// ===== 气温填充 + 双线 =====
+let area='M'+X(0)+' '+Y(hi[0]);
+for(let i=1;i<N;i++)area+=' L'+X(i)+' '+Y(hi[i]);
+for(let i=N-1;i>=0;i--)area+=' L'+X(i)+' '+Y(lo[i]);
+area+=' Z';
+svg.appendChild(el('path',{d:area,fill:'var(--band)',opacity:.35}));
+let ph='M'+X(0)+' '+Y(hi[0]); for(let i=1;i<zoneA;i++)ph+=' L'+X(i)+' '+Y(hi[i]);
+svg.appendChild(el('path',{d:ph,fill:'none',stroke:'#FF5C1A','stroke-width':2.5,'stroke-linejoin':'round'}));
+let pl='M'+X(0)+' '+Y(lo[0]); for(let i=1;i<zoneA;i++)pl+=' L'+X(i)+' '+Y(lo[i]);
+svg.appendChild(el('path',{d:pl,fill:'none',stroke:'#2E86DE','stroke-width':2.5,'stroke-linejoin':'round'}));
+// 实况段外虚线
+[{arr:hi,c:'#FF5C1A'},{arr:lo,c:'#2E86DE'}].forEach(o=>{
+  let d='M'+X(zoneA-1)+' '+Y(o.arr[zoneA-1]);
+  for(let i=zoneA;i<N;i++)d+=' L'+X(i)+' '+Y(o.arr[i]);
+  svg.appendChild(el('path',{d,fill:'none',stroke:o.c,'stroke-width':2,'stroke-dasharray':'5 4','stroke-linejoin':'round',opacity:.45}));
+});
+
+// ===== 降雨柱状图 =====
+const barStyle={act:{fill:'var(--act)',op:0.92,rx:2},fcst:{fill:'var(--fcst)',op:0.82,rx:2},ref:{fill:'var(--ref)',op:0.45,rx:1},stat:{fill:'var(--stat)',op:0.3,rx:1}};
+for(let i=0;i<N;i++){
+  const m=prec[i]; if(m<=0)continue;
+  const z=zone(i), s=barStyle[z];
+  const g=el('g',{});
+  g.appendChild(el('rect',{x:X(i)-bw*0.32,y:YP(m),width:bw*0.64,height:YP(0)-YP(m),fill:s.fill,opacity:s.op,rx:s.rx}));
+  if(z==='ref'||z==='stat'){
+    g.appendChild(el('rect',{x:X(i)-bw*0.32,y:YP(m),width:bw*0.64,height:YP(0)-YP(m),fill:'none',stroke:z==='ref'?'#999':'#CCC','stroke-width':0.8,'stroke-dasharray':'2 2',rx:s.rx,opacity:.6}));
+  }
+  svg.appendChild(g);
+  if(m>=30 && (z==='act'||z==='fcst')){
+    const lb=el('text',{x:X(i),y:YP(m)-4,'text-anchor':'middle','font-size':8.5,fill:z==='act'?'#1B5E96':'#4A9ED6','font-weight':'600'});
+    lb.textContent=m.toFixed(0);svg.appendChild(lb);
+  }
+}
+// 实况最新日标记（今日新更新提示）
+if(zoneA>0){
+  const li=zoneA-1, lm=prec[li];
+  const yTop=lm>0.01?YP(lm):YP(0.3);
+  const g=el('g',{});
+  const dot=el('circle',{cx:X(li),cy:yTop-4,r:4,fill:'#FF5C1A',stroke:'#fff','stroke-width':2});
+  g.appendChild(dot);
+  const lb=el('text',{x:X(li),y:yTop-11,'text-anchor':'middle','font-size':9,fill:'#FF5C1A','font-weight':700});
+  lb.textContent='今';g.appendChild(lb);
+  svg.appendChild(g);
+}
+svg.appendChild(el('line',{x1:x0,y1:pBase,x2:x1,y2:pBase,stroke:'#2E86DE','stroke-width':1,opacity:.3}));
+
+// 气温峰值标注
+function mark(i,c){svg.appendChild(el('circle',{cx:X(i),cy:Y(hi[i]),r:3.5,fill:c,stroke:'#fff','stroke-width':1.5}));}
+function t1(txt,i,dy){const t=el('text',{x:X(i),y:Y(hi[i])+dy,'text-anchor':'middle','font-size':11,fill:'#FF5C1A','font-weight':600});t.textContent=txt;svg.appendChild(t);}
+let maxAH=-Infinity, maxAI=0;
+for(let i=0;i<zoneA;i++)if(hi[i]>maxAH){maxAH=hi[i];maxAI=i;}
+mark(maxAI,'#FF5C1A'); t1(maxAH+'℃',maxAI,-8);
+
+// ===== 悬停交互 =====
+const tip=document.getElementById('tip');
+const guide=el('line',{x1:0,y1:y0,x2:0,y2:pBase,stroke:'#BBB','stroke-width':1,'stroke-dasharray':'3 3',opacity:0});
+svg.appendChild(guide);
+const dotHi=el('circle',{r:4,fill:'#FF5C1A',stroke:'#fff','stroke-width':1.5,opacity:0});
+const dotLo=el('circle',{r:4,fill:'#2E86DE',stroke:'#fff','stroke-width':1.5,opacity:0});
+svg.appendChild(dotHi);svg.appendChild(dotLo);
+function svgPoint(evt){
+  const r=svg.getBoundingClientRect();
+  const px=(evt.clientX-r.left)/r.width*W;
+  let i=Math.round((px-x0)/(x1-x0)*(N-1));
+  return Math.max(0,Math.min(N-1,i));
+}
+function showTip(i){
+  guide.setAttribute('x1',X(i));guide.setAttribute('x2',X(i));guide.setAttribute('opacity',1);
+  dotHi.setAttribute('cx',X(i));dotHi.setAttribute('cy',Y(hi[i]));dotHi.setAttribute('opacity',1);
+  dotLo.setAttribute('cx',X(i));dotLo.setAttribute('cy',Y(lo[i]));dotLo.setAttribute('opacity',1);
+  const r=svg.getBoundingClientRect();
+  const cx=(X(i)/W)*r.width, cy=(Y(hi[i])/H)*r.height;
+  tip.style.left=cx+'px';tip.style.top=cy+'px';tip.style.opacity=1;
+  const z=zone(i),warn=(z==='ref'||z==='stat')?'<span style="color:#E88;font-size:10px"> (不可靠)</span>':'';
+  tip.innerHTML='<b>'+dl(i)+'</b> <span class="src">['+zoneLabel(i).replace('(占位)','').replace('(非预报)','')+']</span>'+warn+
+    '<br><span class="hi">高温 '+hi[i]+'℃</span>  <span class="lo">低温 '+lo[i]+'℃</span>'+
+    '<br><span class="pr">降雨 '+(z==='stat'?'~':'')+prec[i].toFixed(1)+(z==='stat'?'*':'')+'mm</span>';
+}
+function hideTip(){tip.style.opacity=0;guide.setAttribute('opacity',0);dotHi.setAttribute('opacity',0);dotLo.setAttribute('opacity',0);}
+svg.addEventListener('mousemove',e=>showTip(svgPoint(e)));
+svg.addEventListener('mouseleave',hideTip);
+svg.addEventListener('touchstart',e=>showTip(svgPoint(e.touches[0])),{passive:true});
+svg.addEventListener('touchmove',e=>showTip(svgPoint(e.touches[0])),{passive:true});
+svg.addEventListener('touchend',hideTip);
+</script>
+</body>
+</html>

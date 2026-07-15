@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我指定的6个航班 · 机票价格走势</title>
+<style>
+  :root{
+    --bg:#ffffff; --panel:#f7f9fc; --ink:#1f2933; --sub:#67737f;
+    --axis:#cbd5e0; --bd:#e3e8ef;
+    --kn:#e8590c; --ns:#1971c2; --mu:#2f9e44;
+    --ca87:#9c36b5; --ca41:#c92a2a; --ca35:#f08c00;
+    --user:#0c8599;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--ink);padding:28px 20px 48px}
+  .wrap{max-width:860px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 4px}
+  .meta{color:var(--sub);font-size:13px;margin-bottom:14px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--sub);margin:2px 2px 12px}
+  .legend i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:5px;vertical-align:middle}
+  .panel{background:var(--panel);border:1px solid var(--bd);border-radius:14px;
+    padding:16px 14px 8px;margin-bottom:18px}
+  .panel h2{font-size:15px;margin:0 0 2px}
+  .panel .note{font-size:12px;color:var(--sub);margin:0 0 6px}
+  svg{width:100%;height:auto;display:block;overflow:visible}
+  .tip{position:fixed;pointer-events:none;background:#1f2933;color:#fff;font-size:12px;
+    padding:6px 9px;border-radius:6px;opacity:0;transition:opacity .12s;z-index:9;white-space:nowrap}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+  th,td{border:1px solid var(--bd);padding:7px 8px;text-align:center}
+  th{background:#eef2f7;font-weight:600}
+  td.flight{text-align:left;font-weight:600}
+  .conf{font-size:11px;color:var(--sub)}
+  .foot{font-size:12px;color:var(--sub);line-height:1.7;margin-top:18px;
+    border-top:1px solid var(--bd);padding-top:14px}
+  .foot b{color:var(--ink)}
+  .tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:20px;
+    background:#e3fafc;color:#0c8599;margin-left:6px;vertical-align:middle}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>我指定的 6 个航班 · 机票价格走势</h1>
+  <div class="meta">数据源：variflight + 同程 ly.com（2026-07-15 更新）｜ 优先日：去程 <b>8/15</b>、回程 <b>8/21</b> ｜ ✓已确认(variflight逐航班) ？参考(同程多日滚动页)</div>
+
+  <div class="panel">
+    <h2>去程 宁波 → 北京（均落大兴 PKX）</h2>
+    <p class="note">仅你指定的 3 个航班，无"最低价"对比线</p>
+    <div class="legend">
+      <span><i style="background:var(--kn)"></i>KN5996 中联航</span>
+      <span><i style="background:var(--ns)"></i>NS8028 河北航</span>
+      <span><i style="background:var(--mu)"></i>MU5150 东航</span>
+      <span><i style="background:var(--user)"></i>你优先日 8/15</span>
+    </div>
+    <svg id="dep" viewBox="0 0 760 300"></svg>
+  </div>
+
+  <div class="panel">
+    <h2>回程 北京 → 宁波</h2>
+    <p class="note">CA8387 落大兴；CA1541 / CA1535 落首都 PEK</p>
+    <div class="legend">
+      <span><i style="background:var(--ca87)"></i>CA8387 国航(大兴)</span>
+      <span><i style="background:var(--ca41)"></i>CA1541 国航(首都)</span>
+      <span><i style="background:var(--ca35)"></i>CA1535 国航(首都)</span>
+      <span><i style="background:var(--user)"></i>你优先日 8/21</span>
+    </div>
+    <svg id="ret" viewBox="0 0 760 300"></svg>
+  </div>
+
+  <div class="panel">
+    <h2>已知价格明细</h2>
+    <p class="note">空白＝该日期暂无数据，每日自动任务会补齐</p>
+    <table>
+      <thead>
+        <tr><th class="flight">去程航班</th><th>8/12</th><th>8/13</th><th>8/14</th><th>8/15</th><th>8/16</th><th>8/17</th><th>8/18</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="flight">KN5996 中联航</td><td>¥480</td><td></td><td>¥480</td><td>¥480</td><td>¥410</td><td>¥410</td><td>¥410</td></tr>
+        <tr><td class="flight">NS8028 河北航</td><td>¥420</td><td></td><td>¥498</td><td>¥420</td><td>¥420</td><td>¥420</td><td>¥420</td></tr>
+        <tr><td class="flight">MU5150 东航</td><td>¥760</td><td></td><td>¥751</td><td>¥610</td><td>¥750</td><td>¥760</td><td>¥750</td></tr>
+      </tbody>
+    </table>
+    <table style="margin-top:12px">
+      <thead>
+        <tr><th class="flight">回程航班</th><th>8/18</th><th>8/19</th><th>8/20</th><th>8/21</th><th>8/22</th><th>8/23</th><th>8/24</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="flight">CA8387 国航(大兴)</td><td>¥550</td><td>¥550</td><td>¥550</td><td>¥550</td><td>¥460</td><td>¥460</td><td>¥550</td></tr>
+        <tr><td class="flight">CA1541 国航(首都)</td><td>¥1440</td><td>¥1440</td><td>¥1290</td><td>¥1290</td><td>¥700</td><td>¥700</td><td>¥1440</td></tr>
+        <tr><td class="flight">CA1535 国航(首都)</td><td>¥850</td><td>¥850</td><td>¥850</td><td>¥850</td><td>¥700</td><td>¥750</td><td>¥850</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="foot">
+    <b>优先日结论（7/15 更新）：</b>去程 <b>8/15</b> KN5996 <b>¥480</b>（↑¥80，此前¥400）、NS8028 <b>¥420</b>（首次确认！）、MU5150 <b>¥610</b>（首次确认！）。三航班8/15全员到齐。<br>
+    回程 <b>8/21</b>：CA8387 <b>¥550</b>、CA1541 <b>¥1290</b>、CA1535 <b>¥850</b>（均确认，与上次一致）。<br>
+    <b>7/15 新增确认：</b>去程8/14（三航班全齐）、8/15 NS8028+MU5150、8/16+8/18（三航班全齐）。回程8/22+8/23（三航班全齐）。<br>
+    <b>降价提醒：</b>① CA8387 8/22–23 <b>↓¥90</b>（¥550→¥460）；② CA1535 8/22 <b>↓¥150</b>（¥850→¥700）；③ CA1541 8/22–23 从预期¥1290降至 <b>¥700</b>（↓¥590）。<br>
+    <b>涨价提醒：</b>KN5996 8/15 <b>↑¥80</b>（¥400→¥480），可能是旺季临近上涨。8/14 也微涨¥10（¥470→¥480）。<br>
+    <b>唯一缺口：</b>去程 8/13（周五）三航班仍无可靠数据（同程多日滚动页混杂）。<br>
+    <b>数据可信度：</b>本轮全部使用 variflight 逐航班逐日精确查询，航班号+日期一一对应，标注 ✓ 确认。<br>
+    <b>机场提示：</b>去程全落大兴 PKX；回程 CA8387 大兴、CA1541/CA1535 首都 PEK。<br>
+    <b>余票：</b>variflight 不含余票数据；同程需登录 App 查看。
+  </div>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+const SVGNS="http://www.w3.org/2000/svg";
+const tip=document.getElementById("tip");
+function el(t,a){const e=document.createElementNS(SVGNS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+
+function draw(svgId,cfg){
+  const {dates,series,userIdx}=cfg;
+  const svg=document.getElementById(svgId);
+  while(svg.firstChild)svg.removeChild(svg.firstChild);
+  const W=760,H=300,m={l:52,r:20,t:22,b:42},iw=W-m.l-m.r,ih=H-m.t-m.b;
+  const n=dates.length;
+  // global y range
+  let lo=Infinity,hi=-Infinity;
+  series.forEach(s=>s.data.forEach(v=>{if(v!=null){lo=Math.min(lo,v);hi=Math.max(hi,v);}}));
+  if(!isFinite(lo)){lo=0;hi=100;}
+  const pad=Math.max(40,(hi-lo)*0.35);
+  const ymin=Math.floor((lo-pad)/50)*50, ymax=Math.ceil((hi+pad)/50)*50;
+  const X=i=>m.l+(n===1?iw/2:iw*i/(n-1));
+  const Y=v=>m.t+ih*(1-(v-ymin)/(ymax-ymin));
+
+  // y grid
+  const step=Math.max(50,Math.round((ymax-ymin)/5/50)*50);
+  for(let v=ymin;v<=ymax;v+=step){
+    svg.appendChild(el("line",{x1:m.l,y1:Y(v),x2:m.l+iw,y2:Y(v),stroke:"var(--axis)","stroke-width":1}));
+    const t=el("text",{x:m.l-8,y:Y(v)+4,"text-anchor":"end","font-size":11,fill:"var(--sub)"});
+    t.textContent="¥"+v;svg.appendChild(t);
+  }
+  // x labels
+  dates.forEach((d,i)=>{
+    const t=el("text",{x:X(i),y:H-14,"text-anchor":"middle","font-size":11,fill:"var(--sub)"});
+    t.textContent=d;svg.appendChild(t);
+  });
+  // user priority marker
+  if(userIdx!=null){
+    svg.appendChild(el("line",{x1:X(userIdx),y1:m.t,x2:X(userIdx),y2:m.t+ih,
+      stroke:"var(--user)","stroke-width":1.5,"stroke-dasharray":"4 3"}));
+    const lab=el("text",{x:X(userIdx),y:m.t-7,"text-anchor":"middle","font-size":11,fill:"var(--user)","font-weight":700});
+    lab.textContent="优先 "+dates[userIdx];svg.appendChild(lab);
+  }
+  // series
+  series.forEach(s=>{
+    // line through consecutive known points
+    let dPath="";
+    for(let i=0;i<n;i++){
+      if(s.data[i]==null)continue;
+      dPath+=(dPath?" L":"M")+X(i)+","+Y(s.data[i]);
+    }
+    if(dPath)svg.appendChild(el("path",{d:dPath,fill:"none",stroke:s.color,"stroke-width":2.5}));
+    // points
+    s.data.forEach((p,i)=>{
+      if(p==null)return;
+      const sure=s.conf?!!s.conf[i]:true;
+      const c=el("circle",{cx:X(i),cy:Y(p),r:sure?5:5,
+        fill:sure?s.color:"#fff",stroke:s.color,"stroke-width":2,cursor:"pointer"});
+      c.addEventListener("mousemove",e=>{
+        tip.style.opacity=1;
+        tip.textContent=s.name+"  "+dates[i]+"  ¥"+p+(sure?"":" (参考)");
+        tip.style.left=(e.clientX+12)+"px";tip.style.top=(e.clientY-10)+"px";
+      });
+      c.addEventListener("mouseleave",()=>tip.style.opacity=0);
+      svg.appendChild(c);
+      const pl=el("text",{x:X(i),y:Y(p)-(sure?14:14),"text-anchor":"middle","font-size":11,
+        fill:sure?s.color:"#adb5bd","font-weight":600});
+      pl.textContent="¥"+p;svg.appendChild(pl);
+    });
+  });
+}
+
+draw("dep",{
+  dates:["8/12","8/13","8/14","8/15","8/16","8/17","8/18"],
+  userIdx:3,
+  series:[
+    {name:"KN5996 中联航",color:"var(--kn)",data:[480,null,480,480,410,410,410],conf:[1,0,1,1,1,1,1]},
+    {name:"NS8028 河北航",color:"var(--ns)",data:[420,null,498,420,420,420,420],conf:[1,0,1,1,1,1,1]},
+    {name:"MU5150 东航",color:"var(--mu)",data:[760,null,751,610,750,760,750],conf:[1,0,1,1,1,1,1]}
+  ]
+});
+draw("ret",{
+  dates:["8/18","8/19","8/20","8/21","8/22","8/23","8/24"],
+  userIdx:3,
+  series:[
+    {name:"CA8387 国航",color:"var(--ca87)",data:[550,550,550,550,460,460,550],conf:[1,1,1,1,1,1,1]},
+    {name:"CA1541 国航",color:"var(--ca41)",data:[1440,1440,1290,1290,700,700,1440],conf:[1,1,1,1,1,1,1]},
+    {name:"CA1535 国航",color:"var(--ca35)",data:[850,850,850,850,700,750,850],conf:[1,1,1,1,1,1,1]}
+  ]
+});
+</script>
+</body>
+</html>

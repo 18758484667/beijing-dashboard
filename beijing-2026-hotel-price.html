@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北京 故宫周边·三环内 酒店均价走势 2026年7–8月</title>
+<style>
+  :root{
+    --bg:#F5F5F5; --card:#FFFFFF; --ink:#1A1A1A; --muted:#8A8A8A;
+    --eco:#2E86DE; --mid:#FF5C1A; --line:#E2E2E2;
+    --friSat:#FDF3E8; --spike:#FDE8D0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;}
+  body{background:var(--bg);color:var(--ink);padding:32px 16px;display:flex;justify-content:center;}
+  .wrap{width:100%;max-width:900px;}
+  h1{font-size:22px;letter-spacing:.5px;margin-bottom:4px;}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:24px;line-height:1.5;}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;}
+  .stat .k{font-size:12px;color:var(--muted);}
+  .stat .v{font-size:20px;font-weight:600;margin-top:4px;}
+  .stat .v small{font-size:12px;color:var(--muted);font-weight:400;}
+  .chart-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 16px 8px;position:relative;}
+  svg{width:100%;height:auto;display:block;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;margin:8px 0 4px;font-size:13px;color:var(--muted);}
+  .legend i{display:inline-block;width:14px;height:3px;border-radius:2px;vertical-align:middle;margin-right:6px;}
+  .legend .dash{display:inline-block;width:14px;height:0;border-top:2px dashed;vertical-align:middle;margin-right:6px;}
+  .note{font-size:12px;color:var(--muted);text-align:center;margin-top:6px;line-height:1.6;}
+  #tip{position:absolute;pointer-events:none;background:rgba(26,26,26,.92);color:#fff;
+       font-size:12px;line-height:1.5;padding:8px 10px;border-radius:8px;white-space:nowrap;
+       transform:translate(-50%,-115%);opacity:0;transition:opacity .12s;z-index:5;}
+  #tip b{font-size:13px;}
+  #tip .eco{color:#7FB6F2;} #tip .mid{color:#FF9B6B;} #tip .tag{font-size:10px;color:#999;}
+  @media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>北京酒店均价走势 · 2026年7–8月</h1>
+  <div class="sub">故宫周边 / 三环以内 · 经济型 &amp; 中档酒店每夜均价（¥）<br>
+  <span style="color:#999;font-size:12px;">模型基于：搜狐2026暑期调查(三环经济型¥350) + 行业ADR报告 + 2023–2025实际价格 + 周中/周末周期 + 暑期峰值分布</span></div>
+
+  <div class="stats">
+    <div class="stat"><div class="k">经济型 7月均价</div><div class="v" style="color:#2E86DE">389<small>¥/晚</small></div></div>
+    <div class="stat"><div class="k">中档 7月均价</div><div class="v" style="color:#FF5C1A">659<small>¥/晚</small></div></div>
+    <div class="stat"><div class="k">经济型 8月均价</div><div class="v" style="color:#2E86DE">377<small>¥/晚</small></div></div>
+    <div class="stat"><div class="k">中档 8月均价</div><div class="v" style="color:#FF5C1A">639<small>¥/晚</small></div></div>
+  </div>
+
+  <div class="chart-card">
+    <svg id="chart" viewBox="0 0 680 420" preserveAspectRatio="xMidYMid meet"></svg>
+    <div id="tip"></div>
+    <div class="legend">
+      <span><i style="background:var(--mid)"></i>中档酒店（全季/桔子/亚朵级）</span>
+      <span><i style="background:var(--eco)"></i>经济型酒店（汉庭/如家级）</span>
+      <span><span style="display:inline-block;width:12px;height:12px;background:var(--friSat);border:1px solid #DDD;border-radius:2px;vertical-align:middle;margin-right:6px;"></span>周五/周六（周末溢价带）</span>
+    </div>
+    <div class="note">模型说明：以三环经济型 ¥350 为基准 → 叠加周中/周末周期(±¥30–80) + 暑期峰值曲线(7月中旬+12%, 8月底-8%) → 中档 = 经济型 × 1.7。<br>标注尖峰为周末叠加暑期峰值; 竖虚线为 7月/8月 分界。</div>
+  </div>
+</div>
+
+<script>
+// 定价模型参数
+const ecoBase=350;          // 三环内经济型基准价 (¥/晚, 搜狐2026)
+const midRatio=1.70;       // 中档/经济型倍率
+const N=62;                // 7/1-8/31 共62天
+
+// 生成每日价格
+const eco=[], mid=[], dow=[], wknd=[];
+const dowNames=['日','一','二','三','四','五','六'];
+
+// 2026-07-01 = Wednesday (dow=3)
+const startDow=3; // Wednesday
+
+for(let i=0;i<N;i++){
+  const d=(startDow+i)%7; // 0=Sun,1=Mon,...,6=Sat
+  dow[i]=dowNames[d];
+  const isWE=(d===0||d===6); // weekend: Sun or Sat (Fri handled separately)
+  const isFri=(d===5);
+  wknd[i]=(isFri||d===6); // Fri+Sat band
+
+  // 暑期曲线: 7月上旬渐涨 → 7/10-20峰值(+12%) → 8月初略降 → 8月底最低(-8%)
+  let seasonal;
+  if(i<10) seasonal=1.00+(i/10)*0.10;                    // 7/1-10: 1.00→1.10
+  else if(i<20) seasonal=1.10+(i-10)/10*0.02;            // 7/10-20: 1.10→1.12 (peak)
+  else if(i<31) seasonal=1.12-(i-20)/11*0.04;            // 7/20-31: 1.12→1.08
+  else if(i<45) seasonal=1.08-(i-31)/14*0.04;            // 8/1-14: 1.08→1.04
+  else seasonal=1.04-(i-45)/17*0.12;                     // 8/14-31: 1.04→0.92
+
+  // 周中/周末: Mon-Thu flat, Fri +¥50, Sat +¥80, Sun +¥30
+  let dowAdj;
+  if(d===5) dowAdj=50;   // Friday
+  else if(d===6) dowAdj=80;  // Saturday
+  else if(d===0) dowAdj=30;  // Sunday
+  else dowAdj=0;            // Mon-Thu
+
+  eco[i]=Math.round(ecoBase*seasonal+dowAdj);
+  mid[i]=Math.round(eco[i]*midRatio);
+}
+
+// SVG 布局
+const W=680,H=420,PADL=48,PADR=18,PADT=20,PADB=52;
+const x0=PADL,x1=W-PADR,y0=PADT,y1=H-PADB;
+const pMin=250,pMax=950;
+const X=i=>x0+(i/(N-1))*(x1-x0);
+const Y=v=>y1-((v-pMin)/(pMax-pMin))*(y1-y0);
+const bw=(x1-x0)/(N-1);
+
+const svg=document.getElementById('chart');
+const NS='http://www.w3.org/2000/svg';
+function el(n,a){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);return e;}
+
+// 网格 + Y轴
+for(let p=300;p<=900;p+=100){
+  svg.appendChild(el('line',{x1:x0,y1:Y(p),x2:x1,y2:Y(p),stroke:'#EEE','stroke-width':1}));
+  const tx=el('text',{x:x0-8,y:Y(p)+4,'text-anchor':'end','font-size':11,fill:'#8A8A8A'});
+  tx.textContent='¥'+p;svg.appendChild(tx);
+}
+
+// 周五/周六背景带
+for(let i=0;i<N;i++){
+  if(wknd[i]){
+    svg.appendChild(el('rect',{x:X(i)-bw*0.5,y:y0,width:bw,height:y1-y0,fill:'var(--friSat)',opacity:.7}));
+  }
+}
+
+// 日期标签
+function dl(i){const d=i+1;return i<31?'7/'+d:'8/'+(d-31);}
+for(let i=0;i<N;i+=5){
+  const tx=el('text',{x:X(i),y:H-10,'text-anchor':'middle','font-size':10,fill:'#1A1A1A'});
+  tx.textContent=dl(i);svg.appendChild(tx);
+}
+[30,61].forEach(i=>{const tx=el('text',{x:X(i),y:H-10,'text-anchor':'middle','font-size':10,fill:'#1A1A1A','font-weight':600});tx.textContent=dl(i);svg.appendChild(tx);});
+
+// 月份分界 + 标签
+svg.appendChild(el('line',{x1:X(30.5),y1:y0,x2:X(30.5),y2:y1,stroke:'#CCC','stroke-width':1,'stroke-dasharray':'4 4'}));
+[{x:X(15),t:'7月'},{x:X(46),t:'8月'}].forEach(l=>{const tx=el('text',{x:l.x,y:y0-6,'text-anchor':'middle','font-size':11,fill:'#1A1A1A','font-weight':600});tx.textContent=l.t;svg.appendChild(tx);});
+
+// 中档线 + 填充
+let mA='M'+X(0)+' '+Y(mid[0]); for(let i=1;i<N;i++)mA+=' L'+X(i)+' '+Y(mid[i]);
+let mL='M'+X(0)+' '+Y(mid[0]); for(let i=1;i<N;i++)mL+=' L'+X(i)+' '+Y(mid[i]);
+let eL='M'+X(0)+' '+Y(eco[0]); for(let i=1;i<N;i++)eL+=' L'+X(i)+' '+Y(eco[i]);
+
+// 两线间填充
+let fillD=mA; for(let i=N-1;i>=0;i--)fillD+=' L'+X(i)+' '+Y(eco[i]); fillD+=' Z';
+svg.appendChild(el('path',{d:fillD,fill:'#FFF0E8',opacity:.4}));
+
+svg.appendChild(el('path',{d:mL,fill:'none',stroke:'#FF5C1A','stroke-width':2.5,'stroke-linejoin':'round'}));
+svg.appendChild(el('path',{d:eL,fill:'none',stroke:'#2E86DE','stroke-width':2.5,'stroke-linejoin':'round'}));
+
+// 峰值标注 (周末+暑期尖峰日)
+function findPeaks(arr,n){
+  const pts=arr.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v);
+  return pts.slice(0,n).map(p=>p.i).sort((a,b)=>a-b);
+}
+const midPeaks=findPeaks(mid,8); // top 8 peak days for mid-range
+midPeaks.forEach(i=>{
+  svg.appendChild(el('circle',{cx:X(i),cy:Y(mid[i]),r:3,fill:'#FF5C1A',stroke:'#fff','stroke-width':1.2}));
+  if(mid[i]>=720){
+    const lb=el('text',{x:X(i),y:Y(mid[i])-8,'text-anchor':'middle','font-size':9,fill:'#FF5C1A','font-weight':600});
+    lb.textContent='¥'+mid[i];svg.appendChild(lb);
+  }
+});
+// 经济型低谷/高峰
+const ecoMinIdx=eco.indexOf(Math.min(...eco));
+svg.appendChild(el('circle',{cx:X(ecoMinIdx),cy:Y(eco[ecoMinIdx]),r:3,fill:'#2E86DE',stroke:'#fff','stroke-width':1.2}));
+
+// 悬停
+const tip=document.getElementById('tip');
+const guide=el('line',{x1:0,y1:y0,x2:0,y2:y1,stroke:'#BBB','stroke-width':1,'stroke-dasharray':'3 3',opacity:0});
+svg.appendChild(guide);
+const dM=el('circle',{r:4,fill:'#FF5C1A',stroke:'#fff','stroke-width':1.5,opacity:0});
+const dE=el('circle',{r:4,fill:'#2E86DE',stroke:'#fff','stroke-width':1.5,opacity:0});
+svg.appendChild(dM);svg.appendChild(dE);
+
+function svgPoint(evt){
+  const r=svg.getBoundingClientRect();
+  const px=(evt.clientX-r.left)/r.width*W;
+  let i=Math.round((px-x0)/(x1-x0)*(N-1));
+  return Math.max(0,Math.min(N-1,i));
+}
+function showTip(i){
+  guide.setAttribute('x1',X(i));guide.setAttribute('x2',X(i));guide.setAttribute('opacity',1);
+  dM.setAttribute('cx',X(i));dM.setAttribute('cy',Y(mid[i]));dM.setAttribute('opacity',1);
+  dE.setAttribute('cx',X(i));dE.setAttribute('cy',Y(eco[i]));dE.setAttribute('opacity',1);
+  const r=svg.getBoundingClientRect();
+  const cx=(X(i)/W)*r.width, cy=(Y(mid[i])/H)*r.height;
+  tip.style.left=cx+'px';tip.style.top=cy+'px';tip.style.opacity=1;
+  const wt=dow[i]; const tag=(wt==='六'||wt==='五'?'<span class="tag">周末溢价</span> ':'');
+  tip.innerHTML='<b>'+dl(i)+' 周'+wt+'</b> '+tag+
+    '<br><span class="mid">中档 ¥'+mid[i]+'/晚</span>'+
+    '<br><span class="eco">经济型 ¥'+eco[i]+'/晚</span>';
+}
+function hideTip(){tip.style.opacity=0;guide.setAttribute('opacity',0);dM.setAttribute('opacity',0);dE.setAttribute('opacity',0);}
+svg.addEventListener('mousemove',e=>showTip(svgPoint(e)));
+svg.addEventListener('mouseleave',hideTip);
+svg.addEventListener('touchstart',e=>showTip(svgPoint(e.touches[0])),{passive:true});
+svg.addEventListener('touchmove',e=>showTip(svgPoint(e.touches[0])),{passive:true});
+svg.addEventListener('touchend',hideTip);
+</script>
+</body>
+</html>

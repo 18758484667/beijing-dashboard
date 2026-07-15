@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北京指定酒店价格 + 每日推荐 · 2026暑期</title>
+<style>
+  :root{
+    --bg:#f6f8fb; --card:#fff; --line:#e3e8ef; --ink:#1f2a37; --mut:#6b7785;
+    --user:#1B5E96; --ok:#2e7d54; --warn:#b8860b; --bad:#b4452f;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"PingFang SC","Microsoft YaHei",Arial,sans-serif;line-height:1.5}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 48px}
+  header{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;justify-content:space-between;border-bottom:2px solid var(--user);padding-bottom:10px;margin-bottom:6px}
+  h1{font-size:22px;margin:0}
+  .sub{color:var(--mut);font-size:13px}
+  .verified{font-size:13px;color:var(--mut)}
+  .verified b{color:var(--user)}
+  section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 16px 18px;margin:16px 0;box-shadow:0 1px 3px rgba(20,40,80,.04)}
+  h2{font-size:17px;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+  h2 .tag{font-size:11px;font-weight:600;color:#fff;background:var(--user);border-radius:6px;padding:2px 8px}
+  .note{color:var(--mut);font-size:12.5px;margin:2px 0 12px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:#f0f4f9;color:var(--mut);font-weight:600;font-size:12.5px}
+  td .price{font-weight:700;color:var(--user)}
+  .rate{display:inline-block;font-size:11px;border-radius:5px;padding:1px 6px;margin-left:4px}
+  .rate.hi{background:#e6f4ec;color:var(--ok)}
+  .rate.mid{background:#fbf3df;color:var(--warn)}
+  .rate.lo{background:#fbe9e4;color:var(--bad)}
+  .yes{color:var(--ok);font-weight:700}
+  .no{color:var(--mut)}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+  .hcard{border:1px solid var(--line);border-radius:10px;padding:13px 14px;background:#fcfdff}
+  .hcard h3{margin:0 0 6px;font-size:15px}
+  .hcard .meta{font-size:12.5px;color:var(--mut);margin:3px 0}
+  .hcard .price{font-size:18px;font-weight:800;color:var(--user);margin:8px 0 4px}
+  .hcard .crit{font-size:12px;margin-top:6px}
+  .hcard .crit span{display:inline-block;background:#eef4fb;border:1px solid #dbe7f5;border-radius:5px;padding:1px 7px;margin:2px 4px 0 0;color:#335}
+  .badges{margin:8px 0 2px}
+  .badges span{display:inline-block;background:var(--user);color:#fff;border-radius:6px;padding:2px 9px;font-size:12px;margin:0 5px 5px 0}
+  footer{color:var(--mut);font-size:12px;margin-top:18px;line-height:1.7}
+  footer b{color:var(--ink)}
+  .warn{background:#fff8ec;border:1px solid #f0dcae;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#7a5b13;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>北京指定酒店价格 · 每日推荐</h1>
+      <div class="sub">4 家指定酒店近期真实价 ＋ 每天 3 家符合你条件的酒店/民宿</div>
+    </div>
+    <div class="verified">规则最后核验：<b id="verified">2026-07-15</b></div>
+  </header>
+
+  <!-- ============ SECTION 1: 指定4家酒店 ============ -->
+  <section>
+    <h2><span class="tag">指定查询</span>你点名的 4 家酒店 · 近期价格</h2>
+    <p class="note">价格来自搜索引擎聚合的携程/同程/各平台<b>实时索引价</b>（非整文件模型测算）。标注为「当前/近期（7 月）」——你 8/15–21 暑期出行价格通常会更高，以预订时登录后实时价为准。</p>
+    <table>
+      <thead>
+        <tr><th>酒店</th><th>位置</th><th>近期最低价（来源）</th><th>评分</th><th>洗衣</th><th>距地铁</th><th>提示</th></tr>
+      </thead>
+      <!-- SPEC HOTELS START -->
+      <tbody>
+        <tr>
+          <td><b>北京东方饭店</b><br>✅ 你优先选择</td>
+          <td>西城万明路11号<br>（前门/天坛板块）</td>
+          <td><span class="price">双床房 约¥502–550 起</span><br>同程双床房(东方璟楼·标准双床)<br>携程城市观景双床房¥550起(优惠后约¥526) ｜ 双标房参考¥500</td>
+          <td>4.6–4.7</td>
+          <td class="yes">洗衣服务✓</td>
+          <td>虎坊桥站530m<br>珠市口站840m</td>
+          <td>✅ 前门/三环内·距故宫约3km<br>🍳 酒店早¥68偏贵→外吃：楼下自营早餐+前门小吃街(步行15min)；牛街小吃约2km<br>✅ 携程已列明洗衣/干洗服务</td>
+        </tr>
+        <tr>
+          <td><b>北京京伦饭店</b></td>
+          <td>朝阳建国门外大街3号<br>（国贸CBD）</td>
+          <td><span class="price">双床房 ¥498 起(参考)</span><br>百科标准间(双床1.35m)参考¥498<br>近期实拍双床¥736 ｜ 同程7/15整体最低¥884(非双床)</td>
+          <td>4.4–4.7</td>
+          <td class="yes">洗衣服务✓</td>
+          <td>国贸站附近</td>
+          <td>⚠️ 在国贸，<b>不在</b>前门/牛街一带</td>
+        </tr>
+        <tr>
+          <td><b>国际艺苑大酒店</b></td>
+          <td>东城王府井大街48号<br>（王府井）</td>
+          <td><span class="price">双床房 约¥660–710</span><br>Trip.com高级房(可2张单人床)HK$720–771≈¥660–710<br>同程整体¥692 ｜ 7月价已超600</td>
+          <td>4.3</td>
+          <td class="yes">洗衣服务✓</td>
+          <td>灯市口站576m<br>金鱼胡同站305m</td>
+          <td>⚠️ 在王府井，<b>不在</b>前门/牛街一带</td>
+        </tr>
+        <tr>
+          <td><b>北京金龙温泉酒店</b></td>
+          <td>东城建国门南大街5号<br>（建国门/北京站）</td>
+          <td><span class="price">双床房 约¥500–590</span><br>商务/高级双床间(均2张1.2m)<br>Trip.com 7月 HK$641≈¥590 ｜ 携程点评自付¥500</td>
+          <td>4.5</td>
+          <td class="no">温泉为主</td>
+          <td>建国门站330m</td>
+          <td>⚠️ 在建国门，<b>不在</b>前门/牛街一带；含私汤温泉</td>
+        </tr>
+      </tbody>
+      <!-- SPEC HOTELS END -->
+    </table>
+    <div class="warn">⚠️ 4 家里只有<b>北京东方饭店</b>在你要的「前门/牛街·三环内」范围；京伦(国贸)、国际艺苑(王府井)、金龙(建国门)都在东边商务区。若你只想住前门/牛街一带，东方饭店是唯一符合的，后三家仅作比价参考。</div>
+  </section>
+
+  <!-- ============ SECTION 2: 每日推荐3家 ============ -->
+  <section>
+    <h2><span class="tag">每日推荐</span>符合你条件的 3 家（洗衣 · 床≥1.2m · 近地铁 · 近前门/牛街 · 400–600）</h2>
+    <div class="badges">
+      <span>🧺 有洗衣房/洗衣服务/洗衣机</span>
+      <span>🛏 最小床 1.2 米</span>
+      <span>🚇 离地铁近</span>
+      <span>📍 近前门 & 牛街</span>
+      <span>💰 每间 400–600</span>
+    </div>
+    <p class="note">每天 10:00 自动重新筛选并刷新本区。价格多为平台「起价/索引价」，精确房态与最终价以登录预订时为准；标 ⚠️ 边界的表示索引价接近或略超 600 上限。</p>
+    <div class="cards" id="reco">
+      <!-- RECO HOTELS START -->
+      <div class="hcard">
+        <h3>康福瑞酒店（北京牛街地铁站宣武医院店）</h3>
+        <div class="meta">牛街地铁站 <b>370m</b> ｜ 西城牛街14号 ｜ 评分 4.7</div>
+        <div class="price">双床房 约¥415–480 起 <span class="rate hi">价格置信·高</span></div>
+        <div class="meta">同程7/15整体最低¥415(双床无窗在列) ｜ 携程双床房2张1.2m·洗衣房 ｜ 在400–600内</div>
+        <div class="crit">
+          <span>🍳 早餐便利首选·牛街小吃街核心</span><span>🧺 自助洗衣/洗衣服务✓</span><span>🛏 双床房(2张1.2m)✓</span>
+          <span>🚇 牛街站370m✓</span><span>📍 牛街370m/前门约2.5km</span>
+          <span>🍳 楼下洪记(5点开·牛肉包2.5元)/满记烧饼/紫光园·人均15–30</span>
+        </div>
+      </div>
+      <div class="hcard">
+        <h3>如家·neo（北京前门大街店）</h3>
+        <div class="meta">粮食店街61号(前门大街旁) ｜ 珠市口站 <b>220m</b> ｜ 评分 9.4–9.6/10</div>
+        <div class="price">双床房 约¥553–675 <span class="rate mid">边界⚠️</span></div>
+        <div class="meta">Trip.com 双床房(2张1.2m) ｜ 同程邻近如家neo门店¥417–511(参考) ｜ 8月旺季或超600·登录核</div>
+        <div class="crit">
+          <span>🍳 前门大街·游客区早餐</span><span>🧺 免费洗衣房✓</span><span>🛏 双床房(2张1.2m)✓</span>
+          <span>🚇 珠市口站220m✓</span><span>📍 前门大街0.26km/牛街约2km</span>
+          <span>🍳 鲜鱼口/大栅栏小吃·人均20–50·避开主街网红溢价</span>
+        </div>
+      </div>
+      <div class="hcard">
+        <h3>汉庭酒店（北京宣武门店）</h3>
+        <div class="meta">菜市口地铁站 <b>470m</b> ｜ 广安门内大街(菜市口站旁·牛街0.57km) ｜ 评分 9.5–9.6/10</div>
+        <div class="price">双床房 约¥520–530 起 <span class="rate hi">价格置信·高</span></div>
+        <div class="meta">Trip.com 双床房(2张1.2m·20㎡)TWD558≈¥530 ｜ 携程实拍曾见¥465 ｜ 在400–600内·旺季更高</div>
+        <div class="crit">
+          <span>🍳 牛街旁0.57km·步行10min</span><span>🧺 洗衣间✓</span><span>🛏 双床房(2张1.2m)✓</span>
+          <span>🚇 菜市口站470m✓</span><span>📍 牛街0.58km/前门约2.5km</span>
+          <span>🍳 蹭牛街小吃·石记馅饼(6点开)/山东煎饼·人均15–30</span>
+        </div>
+      </div>
+      <!-- RECO HOTELS END -->
+    </div>
+  </section>
+
+  <footer>
+    <b>数据说明（务必看）：</b><br>
+    1. 本页酒店价为<b>搜索引擎聚合的真实索引价</b>，不是模型测算。携程/同程/去哪儿的酒店详情页是登录墙+JS 渲染，直接抓取会失败，故采用聚合方式。<br>
+    2. 价格多为<b>当前/近期（7 月）</b>价；你 8/15–21 暑期出行属旺季，实际价通常更高，预订时以登录后实时为准。<br>
+    3. 推荐区「每日 3 家」由每日 10:00 任务重新搜索筛选（洗衣+床≥1.2m+近地铁+近前门牛街+400–600），并刷新「规则最后核验」日期；价格未公开的会标「待核验」。<br>
+    4. 「最小床1.2米」指该酒店存在≥1.2m床型的房型（标准双床即1.2m），下单时请确认具体房型床宽。
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北京景点预约时间表（每日更新）</title>
+<style>
+  :root{
+    --bg:#f5f7fa; --card:#ffffff; --line:#e3e8ef;
+    --ink:#1f2a37; --sub:#6b7785; --accent:#c0392b; --accent2:#0a6ed1;
+    --warn:#b8860b; --ok:#2e7d32; --user:#0a6ed1;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);padding:24px;line-height:1.5}
+  .wrap{max-width:1080px;margin:0 auto}
+  header{background:linear-gradient(135deg,#c0392b,#8e2a20);color:#fff;border-radius:14px;padding:22px 26px;margin-bottom:18px}
+  header h1{font-size:22px;margin-bottom:6px}
+  header .date{font-size:14px;opacity:.92}
+  header .date b{font-size:16px}
+  .tip{background:#fff8e1;border:1px solid #ffe08a;color:#7a5b00;border-radius:10px;padding:12px 16px;font-size:13px;margin-bottom:16px}
+  .tip b{color:#9a6b00}
+  .grid{display:grid;grid-template-columns:1fr;gap:12px}
+  .row{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;grid-template-columns:160px 1fr 1fr 1fr;gap:12px;align-items:center}
+  .row.head{background:#eef2f7;border:none;font-weight:700;font-size:13px;color:var(--sub);padding:10px 16px}
+  .row .name{font-weight:700;font-size:15px}
+  .row .name small{display:block;font-weight:400;color:var(--sub);font-size:11px;margin-top:2px}
+  .cell .k{font-size:11px;color:var(--sub);margin-bottom:2px}
+  .cell .v{font-size:14px;font-weight:600}
+  .grab{color:var(--accent);font-weight:800;font-size:15px}
+  .latest{color:var(--user);font-weight:800;font-size:15px}
+  .latest.warn{color:var(--warn)}
+  .latest.missed{color:#9aa3ad;font-weight:700;text-decoration:line-through}
+  .ch{color:var(--accent2);font-size:13px}
+  .price{font-size:13px}
+  .note{font-size:11px;color:var(--warn);margin-top:2px}
+  .closed{font-size:11px;color:var(--sub)}
+  .conflict{border-left:4px solid var(--warn)}
+  footer{margin-top:20px;font-size:12px;color:var(--sub);text-align:center;line-height:1.8}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--sub);margin:6px 0 14px}
+  .legend span i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:middle}
+  @media(max-width:720px){
+    .row{grid-template-columns:1fr 1fr;gap:8px}
+    .row.head{display:none}
+    .row .name{grid-column:1/3}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>北京景点预约时间表</h1>
+    <div class="date">今日 <b id="today"></b> ｜ 规则最后核验：<span id="verified">2026-07-15</span> ｜ 数据来源：各景区官方小程序/公众号公开规则</div>
+  </header>
+
+  <div class="tip">
+    <b>怎么看这张表：</b>「每天几点抢」是放票时刻（定好闹钟，提前5–10分钟进页面）；「最新可约日期」= 今天 + 提前天数，每天自动滚动。<b>所有热门景点均无现场票，没约上=进不去。</b>带好预约时用的身份证原件。
+  </div>
+
+  <div class="legend">
+    <span><i style="background:var(--accent)"></i>抢票时刻</span>
+    <span><i style="background:var(--user)"></i>最新可约日期（按今日动态计算）</span>
+    <span><i style="background:var(--warn)"></i>黄条=规则有冲突/存疑，以官方为准</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    说明：各平台规则可能随节假日/客流调整（慕田峪提前天数有源冲突，以官方30天为准）。北大/清华为暑期限时开放，截止日已标出，逾期不可约。<br>
+    本表每日自动复核规则变动并刷新。预约请认准官方小程序/公众号，谨防第三方代抢黄牛。
+  </footer>
+</div>
+
+<script>
+// 景点预约规则（advanceDays=提前可约天数；grab=每日放票时刻）
+const SPOTS = [
+  {name:"故宫博物院", sub:"最难抢·周一闭馆", advance:7, grab:"20:00", channel:"故宫博物院 微信小程序（唯一官方）", price:"旺季60元 / 学生20", closed:"周一闭馆", conflict:false, note:"门票及珍宝馆、钟表馆均提前7日20:00开售，不售当日票"},
+  {name:"中国国家博物馆", sub:"免费·国博", advance:7, grab:"17:00", channel:"国家博物馆 小程序/公众号", price:"免费（特展另约）", closed:"周一闭馆", conflict:false, note:"每日17:00放票，提前7日内；每周限约1次"},
+  {name:"天安门广场·升旗", sub:"免费·须选升旗时段", advance:9, grab:"12:00", channel:"天安门广场预约参观 小程序", price:"免费", closed:"无", conflict:false, note:"提前1–9天，未来10日内名额；观升旗须单独约「升旗」时段，约广场≠能看升旗"},
+  {name:"天安门城楼", sub:"安检极严", advance:7, grab:"17:00", channel:"天安门城楼参观预约 公众号", price:"15元", closed:"周一闭馆", conflict:false, note:"建议不带包/水/充电宝"},
+  {name:"天坛公园", sub:"买联票更划算", advance:7, grab:"21:00", channel:"畅游公园 / 天坛公园 公众号", price:"联票34元(旺)/大门票15", closed:"核心景点周一上午闭", conflict:false, note:"每晚21:00放票，可提前1–7天；只买大门票进不了祈年殿"},
+  {name:"颐和园", sub:"市属公园", advance:7, grab:"21:00", channel:"颐和园 / 畅游公园 公众号", price:"30元(旺)", closed:"无", conflict:false, note:"每晚21:00开启预售，提前1–7天"},
+  {name:"恭王府", sub:"清代王府", advance:10, grab:"20:00", channel:"恭王府博物馆 公众号", price:"40元", closed:"周一闭馆", conflict:false, note:"最早可于参观10日前20:00预订"},
+  {name:"慕田峪长城", sub:"人少·可早约", advance:30, grab:"即时", channel:"慕田峪长城 公众号/官网", price:"45元(旺)", closed:"无", conflict:true, note:"官网称可提前30天预约；个别攻略写2–7天，以官方30天为准"},
+  {name:"北京大学", sub:"暑期7/11–8/16", advance:7, grab:"08:00", channel:"参观北大 微信小程序", price:"免费", closed:"暑期周一也开", conflict:false, lastDate:"2026-08-16", note:"每日8:00放即时名额(提前7天)；17:00–21:45抽签(提前8天)。90天内仅约1次，仅东侧门入。⚠️开放至8/16，你8/15–21行程中只有8/15、8/16能进"},
+  {name:"清华大学", sub:"暑期7/4–8/11", advance:7, grab:"08:00", channel:"清华大学 公众号/参观清华 小程序", price:"免费", closed:"每周一闭园", conflict:false, lastDate:"2026-08-11", note:"即时预约工作日提前1天、周末提前7天；抽签提前8天。180天内仅约1次，西门南侧入。⚠️开放至8/11，你8/15到京时已闭园，赶不上"}
+];
+
+function fmt(d){
+  return (d.getMonth()+1)+"月"+d.getDate()+"日";
+}
+function render(){
+  const now = new Date();
+  const TRIP_START = new Date(2026,7,15); // 用户行程：8/15 到京
+  document.getElementById('today').textContent = now.getFullYear()+"年"+(now.getMonth()+1)+"月"+now.getDate()+"日";
+  const grid = document.getElementById('grid');
+  let html = '<div class="row head"><div>景点</div><div>每天几点抢</div><div>最新可约 / 开放截止</div><div>预约渠道 / 票价 / 备注</div></div>';
+  SPOTS.forEach(s=>{
+    let latestTxt, latestCls="latest", latestSub=s.closed, kLabel="最新可约（今日+"+s.advance+"天）";
+    if(s.lastDate){
+      const ld = new Date(s.lastDate);
+      latestTxt = fmt(ld);
+      kLabel = "开放截止（最晚可约）";
+      if(now > ld){ latestCls="latest missed"; latestSub="已截止"; }
+      else if(ld < TRIP_START){ latestCls="latest missed"; latestSub="你行程赶不上"; }
+      else { latestCls="latest warn"; latestSub="你8/15–16可去"; }
+    } else {
+      const d = new Date(now); d.setDate(d.getDate()+s.advance);
+      latestTxt = fmt(d);
+    }
+    html += `<div class="row ${s.conflict?'conflict':''}">
+      <div class="name">${s.name}<small>${s.sub}</small></div>
+      <div class="cell"><div class="k">放票时刻（抢票点）</div><div class="grab">${s.grab}</div></div>
+      <div class="cell"><div class="k">${kLabel}</div><div class="${latestCls}">${latestTxt}</div><div class="closed">${latestSub}</div></div>
+      <div class="cell"><div class="ch">${s.channel}</div><div class="price">票价：${s.price}</div><div class="note">${s.note}</div></div>
+    </div>`;
+  });
+  grid.innerHTML = html;
+}
+render();
+</script>
+</body>
+</html>
