@@ -17,34 +17,40 @@
   .date{color:var(--muted);font-size:13px;margin-top:4px;}
   .sub{color:var(--muted);font-size:13px;margin-top:8px;line-height:1.6;}
   .sub b{color:var(--ink);}
+  /* 桌面端 panel + iframe */
   .panel{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:18px;overflow:hidden;}
   .bar{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);}
   .bar .t{font-size:15px;font-weight:600;display:flex;align-items:center;gap:9px;}
-  .dot{width:10px;height:10px;border-radius:50%;flex:none;}
+  .dot{width:10px;height:10px;border-radius:50%;flex:none;display:inline-block;}
   .bar a{font-size:12px;color:var(--cool);text-decoration:none;white-space:nowrap;}
   .bar a:hover{text-decoration:underline;}
   .panel iframe{width:100%;border:0;display:block;background:#fff;}
   .fallback{display:none;padding:18px 16px;font-size:13px;color:var(--muted);line-height:1.7;}
+  /* 移动端概览：表格卡片，点击进详情页 */
+  .mobile-view{display:none;}
+  .mcard{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden;}
+  .mcard:active{background:#fafafa;}
+  .mhead{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;border-bottom:1px solid var(--line);font-size:14px;font-weight:600;}
+  .mhead .lt{display:flex;align-items:center;gap:8px;}
+  .mhead .go{font-size:11.5px;color:var(--cool);font-weight:400;}
+  .mtbl{width:100%;border-collapse:collapse;font-size:12.5px;}
+  .mtbl td{padding:7px 13px;border-bottom:1px solid #f0f0f0;vertical-align:middle;}
+  .mtbl tr:last-child td{border-bottom:none;}
+  .mtbl td:first-child{font-weight:600;white-space:nowrap;}
+  .mtbl .pri{color:var(--accent);font-weight:700;white-space:nowrap;}
+  .mtbl .mut{color:var(--muted);font-size:11.5px;}
+  .mtbl tr.sec td{background:#fafafa;font-size:11px;color:var(--muted);font-weight:600;}
+  .mtbl .warn{color:#b8860b;font-weight:600;}
+  .mtbl .bad{color:#b4452f;font-weight:600;}
   footer{font-size:12px;color:var(--muted);line-height:1.8;margin-top:6px;}
   footer .tag{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:6px;padding:2px 8px;margin-right:6px;color:var(--ink);}
-  .summary,.toggle{display:none;}
-  /* 移动端：摘要卡片式，默认折叠 iframe，点击展开看详情 */
+  /* 移动端：表格概览，点击进详情 */
   @media(max-width:680px){
     body{padding:14px 10px 40px;}
     h1{font-size:19px;}
-    .panel{border-radius:12px;margin-bottom:12px;}
-    .bar{flex-wrap:wrap;gap:6px;padding:12px 13px;cursor:pointer;}
-    .bar .t{font-size:14px;gap:7px;flex:1 1 auto;order:1;}
-    .bar a{display:none;}
-    .summary{display:block;flex:1 1 100%;order:3;font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:3px;}
-    .summary b{color:var(--ink);}
-    .toggle{display:inline-flex;align-items:center;gap:4px;order:2;font-size:12px;color:var(--cool);background:#eef4ff;border:1px solid #d6e4ff;border-radius:8px;padding:5px 11px;white-space:nowrap;}
-    .toggle::after{content:" ▾";}
-    .panel.expanded .toggle::after{content:" ▴";}
-    .panel.expanded .toggle{background:#e6f4ea;border-color:#c3e6cb;color:var(--green);}
-    .panel iframe{display:none;}
-    .panel.expanded iframe{display:block;}
-    .fallback{display:none!important;}
+    .sub{font-size:12px;line-height:1.55;}
+    .panel{display:none;}
+    .mobile-view{display:block;}
     footer{font-size:11.5px;}
     footer .tag{font-size:11px;padding:2px 7px;}
   }
@@ -55,14 +61,67 @@
   <header>
     <h1>北京之行 · 每日看板</h1>
     <div class="date" id="today"></div>
-    <p class="sub">指定酒店价/每日推荐 · 景点预约 · 天气/降雨量 · 机票价格，一屏看。均由每日 10:00 自动任务刷新，本页打开即最新。</p>
+    <p class="sub">指定酒店价/每日推荐 · 景点预约 · 天气/降雨量 · 机票价格。手机端点击各模块进入完整详情页。均由每日 10:00 自动任务刷新。</p>
   </header>
 
+  <!-- ===== 移动端概览：表格卡片，点击跳转详情页 ===== -->
+  <div class="mobile-view">
+    <a class="mcard" href="beijing-2026-hotels-spec.html">
+      <div class="mhead"><span class="lt"><span class="dot" style="background:var(--accent)"></span>指定酒店 + 每日推荐</span><span class="go">完整详情 ↗</span></div>
+      <table class="mtbl">
+        <tr><td>东方饭店</td><td class="pri">¥502</td><td class="mut">前门·虎坊桥530m·洗衣✓</td></tr>
+        <tr><td>京伦饭店</td><td>¥498参考</td><td class="mut">国贸</td></tr>
+        <tr><td>国际艺苑</td><td>¥660+</td><td class="mut">王府井</td></tr>
+        <tr><td>金龙温泉</td><td>¥500–590</td><td class="mut">建国门·含私汤</td></tr>
+        <tr class="sec"><td colspan="3">每日推荐（洗衣·床1.2m·近地铁·近前门牛街·400–600）</td></tr>
+        <tr><td>康福瑞</td><td class="pri">¥415起</td><td class="mut">牛街370m·洗衣✓·早餐优</td></tr>
+        <tr><td>如家neo前门</td><td>¥553</td><td class="mut">珠市口220m</td></tr>
+        <tr><td>汉庭宣武门</td><td>¥520起</td><td class="mut">菜市口470m</td></tr>
+      </table>
+    </a>
+
+    <a class="mcard" href="beijing-2026-booking.html">
+      <div class="mhead"><span class="lt"><span class="dot" style="background:var(--cool)"></span>景点预约时间表</span><span class="go">完整详情 ↗</span></div>
+      <table class="mtbl">
+        <tr><td>故宫</td><td class="pri">20:00抢</td><td class="mut">提前7天·最难抢</td></tr>
+        <tr><td>国博</td><td>17:00</td><td class="mut">提前7天·免费</td></tr>
+        <tr><td>天安门升旗</td><td>12:00</td><td class="mut">提前9天·免费</td></tr>
+        <tr><td>天坛</td><td>21:00</td><td class="mut">提前7天</td></tr>
+        <tr><td>颐和园</td><td>21:00</td><td class="mut">提前7天</td></tr>
+        <tr><td>恭王府</td><td>20:00</td><td class="mut">提前10天</td></tr>
+        <tr><td>北大</td><td>08:00</td><td class="warn">截止8/16⚠️</td></tr>
+        <tr><td>清华</td><td>08:00</td><td class="bad">已闭园✗</td></tr>
+      </table>
+    </a>
+
+    <a class="mcard" href="beijing-2026-7-8-weather.html">
+      <div class="mhead"><span class="lt"><span class="dot" style="background:var(--cool)"></span>天气 / 降雨量</span><span class="go">完整详情 ↗</span></div>
+      <table class="mtbl">
+        <tr><td>今日</td><td class="pri">34℃/25℃</td><td class="mut">降雨0.8mm</td></tr>
+        <tr><td>7月累计</td><td>~800mm</td><td class="mut">偏多</td></tr>
+        <tr><td>8月展望</td><td>雨季</td><td class="mut">伞随身·防短时暴雨</td></tr>
+      </table>
+    </a>
+
+    <a class="mcard" href="beijing-2026-myflights.html">
+      <div class="mhead"><span class="lt"><span class="dot" style="background:var(--green)"></span>机票价格（指定6航班）</span><span class="go">完整详情 ↗</span></div>
+      <table class="mtbl">
+        <tr class="sec"><td colspan="3">去程 8/15 宁波→北京（大兴）</td></tr>
+        <tr><td>KN5996 中联航</td><td class="pri">¥480</td><td class="mut">✓确认</td></tr>
+        <tr><td>NS8028 河北航</td><td class="pri">¥420</td><td class="mut">✓确认</td></tr>
+        <tr><td>MU5150 东航</td><td>¥610</td><td class="mut">✓确认</td></tr>
+        <tr class="sec"><td colspan="3">回程 8/21 北京→宁波</td></tr>
+        <tr><td>CA8387 国航(大兴)</td><td class="pri">¥550</td><td class="mut">✓确认</td></tr>
+        <tr><td>CA1541 国航(首都)</td><td>¥1290</td><td class="mut">✓确认</td></tr>
+        <tr><td>CA1535 国航(首都)</td><td>¥850</td><td class="mut">✓确认</td></tr>
+      </table>
+    </a>
+  </div>
+
+  <!-- ===== 桌面端 panel（iframe 全展开） ===== -->
   <div class="panel">
     <div class="bar">
       <div class="t"><span class="dot" style="background:var(--accent)"></span>指定酒店价 + 每日推荐</div>
-      <div class="summary"><b>东方饭店</b> 双床¥502✓ 前门唯一符合 ｜ 推荐 <b>康福瑞</b>¥415起</div>
-      <button class="toggle" type="button">展开详情</button>
       <a href="beijing-2026-hotels-spec.html" target="_blank">↗ 单独打开</a>
     </div>
     <iframe src="beijing-2026-hotels-spec.html" style="height:820px" loading="lazy"></iframe>
@@ -72,8 +131,6 @@
   <div class="panel">
     <div class="bar">
       <div class="t"><span class="dot" style="background:var(--cool)"></span>景点预约时间表</div>
-      <div class="summary">故宫 今晚20:00抢·可约8/22 ｜ <b>北大截止8/16</b>⚠️ 清华8/11已闭园</div>
-      <button class="toggle" type="button">展开详情</button>
       <a href="beijing-2026-booking.html" target="_blank">↗ 单独打开</a>
     </div>
     <iframe src="beijing-2026-booking.html" style="height:680px" loading="lazy"></iframe>
@@ -83,8 +140,6 @@
   <div class="panel">
     <div class="bar">
       <div class="t"><span class="dot" style="background:var(--cool)"></span>天气 / 降雨量</div>
-      <div class="summary">今34℃/25℃·降雨0.8mm ｜ 7月累计~800mm（偏多）</div>
-      <button class="toggle" type="button">展开详情</button>
       <a href="beijing-2026-7-8-weather.html" target="_blank">↗ 单独打开</a>
     </div>
     <iframe src="beijing-2026-7-8-weather.html" style="height:840px" loading="lazy"></iframe>
@@ -94,8 +149,6 @@
   <div class="panel">
     <div class="bar">
       <div class="t"><span class="dot" style="background:var(--green)"></span>机票价格（指定6航班）</div>
-      <div class="summary">去8/15 <b>KN5996¥480</b> ｜ 回8/21 <b>CA8387¥550</b></div>
-      <button class="toggle" type="button">展开详情</button>
       <a href="beijing-2026-myflights.html" target="_blank">↗ 单独打开</a>
     </div>
     <iframe src="beijing-2026-myflights.html" style="height:920px" loading="lazy"></iframe>
@@ -114,16 +167,16 @@
 <script>
   const n = new Date();
   const wd = ['日','一','二','三','四','五','六'][n.getDay()];
-  document.getElementById('today').textContent = n.getFullYear() + '年' + (n.getMonth()+1) + '月' + (n.getDate()) + '日（周' + wd + '）';
+  document.getElementById('today').textContent = n.getFullYear() + '年' + (n.getMonth()+1) + '月' + n.getDate() + '日（周' + wd + '）';
 
-  // iframe 高度自适应（同域可读子页真实高度，消除移动端空白/截断）
+  // 桌面端 iframe 高度自适应（同域可读子页真实高度）
   function fitFrame(f){
     try{
       const d=f.contentDocument;
       if(!d||!d.body) return;
       const h=Math.max(d.body.scrollHeight, d.documentElement?d.documentElement.scrollHeight:0);
       if(h>120) f.style.height=(h+6)+'px';
-    }catch(e){ /* 跨域：保留 inline 固定高度作 fallback */ }
+    }catch(e){}
   }
   const frames=document.querySelectorAll('.panel iframe');
   let rT;
@@ -131,7 +184,6 @@
   frames.forEach(f=>{
     f.addEventListener('load',()=>{
       fitFrame(f);
-      // 子页 JS 动态生成内容，多次重测确保高度准确
       setTimeout(()=>fitFrame(f),350);
       setTimeout(()=>fitFrame(f),900);
       setTimeout(()=>fitFrame(f),2000);
@@ -142,7 +194,6 @@
         }
       }catch(e){}
     });
-    // 加载失败兜底链接
     f.addEventListener('error',()=>{f.style.display='none';f.nextElementSibling.style.display='block';});
     setTimeout(()=>{
       try{
@@ -151,23 +202,6 @@
         }
       }catch(e){}
     },3500);
-  });
-
-  // 移动端：点击标题栏展开/收起对应 iframe
-  document.querySelectorAll('.panel .bar').forEach(bar=>{
-    bar.addEventListener('click',e=>{
-      if(e.target.closest('a')) return; // 链接正常跳转
-      const p=bar.closest('.panel');
-      const expanded=p.classList.toggle('expanded');
-      const tg=bar.querySelector('.toggle');
-      if(tg) tg.firstChild.textContent = expanded?'收起':'展开详情';
-      if(expanded){
-        const f=p.querySelector('iframe');
-        setTimeout(()=>fitFrame(f),60);
-        setTimeout(()=>fitFrame(f),450);
-        setTimeout(()=>fitFrame(f),1200);
-      }
-    });
   });
 </script>
 </body>
