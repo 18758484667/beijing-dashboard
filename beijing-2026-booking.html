@@ -34,6 +34,13 @@
   .price{font-size:13px}
   .note{font-size:11px;color:var(--warn);margin-top:2px}
   .closed{font-size:11px;color:var(--sub)}
+  /* 退票规则 hover/focus 浮层 */
+  .refund{position:relative;display:inline-block;margin-top:5px;font-size:11px;color:var(--accent2);cursor:help;border-bottom:1px dashed var(--accent2);outline:none;}
+  .refund .pop{display:none;position:absolute;bottom:135%;right:0;width:230px;max-width:80vw;
+    background:#1f2a37;color:#fff;font-size:11.5px;line-height:1.6;padding:9px 12px;
+    border-radius:8px;z-index:20;box-shadow:0 4px 14px rgba(0,0,0,.18);font-weight:400;text-align:left;}
+  .refund:hover .pop,.refund:focus .pop{display:block;}
+  .refund .pop::after{content:"";position:absolute;top:100%;right:16px;border:6px solid transparent;border-top-color:#1f2a37;}
   .conflict{border-left:4px solid var(--warn)}
   footer{margin-top:20px;font-size:12px;color:var(--sub);text-align:center;line-height:1.8}
   .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--sub);margin:6px 0 14px}
@@ -87,16 +94,16 @@
 <script>
 // 景点预约规则（advanceDays=提前可约天数；grab=每日放票时刻）
 const SPOTS = [
-  {name:"故宫博物院", sub:"最难抢·周一闭馆", advance:7, grab:"20:00", channel:"故宫博物院 微信小程序（唯一官方）", price:"旺季60元 / 学生20", closed:"周一闭馆", conflict:false, note:"门票及珍宝馆、钟表馆均提前7日20:00开售，不售当日票"},
-  {name:"中国国家博物馆", sub:"免费·国博", advance:7, grab:"17:00", channel:"国家博物馆 小程序/公众号", price:"免费（特展另约）", closed:"周一闭馆", conflict:false, note:"每日17:00放票，提前7日内；每周限约1次"},
-  {name:"天安门广场·升旗", sub:"免费·须选升旗时段", advance:9, grab:"12:00", channel:"天安门广场预约参观 小程序", price:"免费", closed:"无", conflict:false, note:"提前1–9天，未来10日内名额；观升旗须单独约「升旗」时段，约广场≠能看升旗"},
-  {name:"天安门城楼", sub:"安检极严", advance:7, grab:"17:00", channel:"天安门城楼参观预约 公众号", price:"15元", closed:"周一闭馆", conflict:false, note:"建议不带包/水/充电宝"},
-  {name:"天坛公园", sub:"买联票更划算", advance:7, grab:"21:00", channel:"畅游公园 / 天坛公园 公众号", price:"联票34元(旺)/大门票15", closed:"核心景点周一上午闭", conflict:false, note:"每晚21:00放票，可提前1–7天；只买大门票进不了祈年殿"},
-  {name:"颐和园", sub:"市属公园", advance:7, grab:"21:00", channel:"颐和园 / 畅游公园 公众号", price:"30元(旺)", closed:"无", conflict:false, note:"每晚21:00开启预售，提前1–7天"},
-  {name:"恭王府", sub:"清代王府", advance:10, grab:"20:00", channel:"恭王府博物馆 公众号", price:"40元", closed:"周一闭馆", conflict:false, note:"最早可于参观10日前20:00预订"},
-  {name:"慕田峪长城", sub:"人少·可早约", advance:30, grab:"即时", channel:"慕田峪长城 公众号/官网", price:"45元(旺)", closed:"无", conflict:true, note:"官网称可提前30天预约；个别攻略写2–7天，以官方30天为准"},
-  {name:"北京大学", sub:"暑期7/11–8/16", advance:7, grab:"08:00", channel:"参观北大 微信小程序", price:"免费", closed:"暑期周一也开", conflict:false, lastDate:"2026-08-16", note:"每日8:00放即时名额(提前7天)；17:00–21:45抽签(提前8天)。90天内仅约1次，仅东侧门入。⚠️开放至8/16，你8/15–21行程中只有8/15、8/16能进"},
-  {name:"清华大学", sub:"暑期7/4–8/11", advance:7, grab:"08:00", channel:"清华大学 公众号/参观清华 小程序", price:"免费", closed:"每周一闭园", conflict:false, lastDate:"2026-08-11", note:"即时预约工作日提前1天、周末提前7天；抽签提前8天。180天内仅约1次，西门南侧入。⚠️开放至8/11，你8/15到京时已闭园，赶不上"}
+  {name:"故宫博物院", sub:"最难抢·周一闭馆", advance:7, grab:"20:00", channel:"故宫博物院 微信小程序（唯一官方）", price:"旺季60元 / 学生20", closed:"周一闭馆", conflict:false, note:"门票及珍宝馆、钟表馆均提前7日20:00开售，不售当日票", refund:"未入园前可在小程序「我的订单」申请退票，全额退款；入园后不可退。珍宝馆/钟表馆随门票一并退。（以官方为准）"},
+  {name:"中国国家博物馆", sub:"免费·国博", advance:7, grab:"17:00", channel:"国家博物馆 小程序/公众号", price:"免费（特展另约）", closed:"周一闭馆", conflict:false, note:"每日17:00放票，提前7日内；每周限约1次", refund:"免费，未参观前可在订单页取消预约；逾期未取消可能影响后续预约资格。（以官方为准）"},
+  {name:"天安门广场·升旗", sub:"免费·须选升旗时段", advance:9, grab:"12:00", channel:"天安门广场预约参观 小程序", price:"免费", closed:"无", conflict:false, note:"提前1–9天，未来10日内名额；观升旗须单独约「升旗」时段，约广场≠能看升旗", refund:"免费，未到访前可取消预约；无需退款。（以官方为准）"},
+  {name:"天安门城楼", sub:"安检极严", advance:7, grab:"17:00", channel:"天安门城楼参观预约 公众号", price:"15元", closed:"周一闭馆", conflict:false, note:"建议不带包/水/充电宝", refund:"15元，未登楼前可退全额；登楼后不可退。（以官方为准）"},
+  {name:"天坛公园", sub:"买联票更划算", advance:7, grab:"21:00", channel:"畅游公园 / 天坛公园 公众号", price:"联票34元(旺)/大门票15", closed:"核心景点周一上午闭", conflict:false, note:"每晚21:00放票，可提前1–7天；只买大门票进不了祈年殿", refund:"联票/大门票未入园前可退，在原购票渠道申请；入园后不可退。（以官方为准）"},
+  {name:"颐和园", sub:"市属公园", advance:7, grab:"21:00", channel:"颐和园 / 畅游公园 公众号", price:"30元(旺)", closed:"无", conflict:false, note:"每晚21:00开启预售，提前1–7天", refund:"未入园前可退全额；园中园门票单独退。（以官方为准）"},
+  {name:"恭王府", sub:"清代王府", advance:10, grab:"20:00", channel:"恭王府博物馆 公众号", price:"40元", closed:"周一闭馆", conflict:false, note:"最早可于参观10日前20:00预订", refund:"40元，未入园前可退全额；入园后不可退。（以官方为准）"},
+  {name:"慕田峪长城", sub:"人少·可早约", advance:30, grab:"即时", channel:"慕田峪长城 公众号/官网", price:"45元(旺)", closed:"无", conflict:true, note:"官网称可提前30天预约；个别攻略写2–7天，以官方30天为准", refund:"45元，未入园前可退；优惠/套票退改规则以官方为准。（以官方为准）"},
+  {name:"北京大学", sub:"暑期7/11–8/16", advance:7, grab:"08:00", channel:"参观北大 微信小程序", price:"免费", closed:"暑期周一也开", conflict:false, lastDate:"2026-08-16", note:"每日8:00放即时名额(提前7天)；17:00–21:45抽签(提前8天)。90天内仅约1次，仅东侧门入。⚠️开放至8/16，你8/15–21行程中只有8/15、8/16能进", refund:"免费，未参观前可取消预约；90天内仅约1次，取消后是否释放次数以官方为准。（以官方为准）"},
+  {name:"清华大学", sub:"暑期7/4–8/11", advance:7, grab:"08:00", channel:"清华大学 公众号/参观清华 小程序", price:"免费", closed:"每周一闭园", conflict:false, lastDate:"2026-08-11", note:"即时预约工作日提前1天、周末提前7天；抽签提前8天。180天内仅约1次，西门南侧入。⚠️开放至8/11，你8/15到京时已闭园，赶不上", refund:"免费，未参观前可取消预约；180天内仅约1次。（以官方为准）"}
 ];
 
 function fmt(d){
@@ -125,7 +132,7 @@ function render(){
       <div class="name">${s.name}<small>${s.sub}</small></div>
       <div class="cell"><div class="k">放票时刻（抢票点）</div><div class="grab">${s.grab}</div></div>
       <div class="cell"><div class="k">${kLabel}</div><div class="${latestCls}">${latestTxt}</div><div class="closed">${latestSub}</div></div>
-      <div class="cell"><div class="ch">${s.channel}</div><div class="price">票价：${s.price}</div><div class="note">${s.note}</div></div>
+      <div class="cell"><div class="ch">${s.channel}</div><div class="price">票价：${s.price}</div><div class="note">${s.note}</div><span class="refund" tabindex="0">ⓘ 退票规则<span class="pop">${s.refund}</span></span></div>
     </div>`;
   });
   grid.innerHTML = html;
