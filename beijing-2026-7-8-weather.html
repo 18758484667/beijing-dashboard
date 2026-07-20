@@ -54,19 +54,19 @@
 <body>
 <div class="wrap">
   <h1>北京降雨量预测 · 2026年7–8月</h1>
-  <div class="sub"><strong>7/1–7/16 实况</strong>（tianqi24，累计约801mm）→ <strong>7/17–7/25 短期预报</strong>（tianqi.com）→ 7/26–8/8 <strong>远期参考</strong>（占位数据，不可靠）→ 8/9–31 <strong>统计外推</strong>（基于2025模式缩放，非真实预报）。注：7/10 雨量经源站修订为 139.75mm（原44.68）；7/11–16 气温因 tianqi24 实况气温接口异常，以预报回填，降雨为实况。</div>
+  <div class="sub"><strong>7/1–7/19 实况</strong>（tianqi24，累计约895mm）→ <strong>7/20–7/25 短期预报</strong>（tianqi.com）→ 7/26–8/8 <strong>远期参考</strong>（占位数据，不可靠）→ 8/9–31 <strong>统计外推</strong>（基于2025模式缩放，非真实预报）。注：7/10 雨量经源站修订为 139.75mm（原44.68）；7/11–16 气温因 tianqi24 接口异常以预报回填；7/17–19 气温来自 tianqi24（本次接口正常），降雨均为实况。</div>
 
   <div class="zone-badge">
-    <div class="badge"><span class="sw" style="background:var(--act)"></span> 实况 7/1–16</div>
-    <div class="badge"><span class="sw" style="background:var(--fcst)"></span> 短期预报 7/17–25</div>
+    <div class="badge"><span class="sw" style="background:var(--act)"></span> 实况 7/1–19</div>
+    <div class="badge"><span class="sw" style="background:var(--fcst)"></span> 短期预报 7/20–25</div>
     <div class="badge"><span class="sw" style="background:var(--ref);border:1px dashed #999"></span> 远期参考 7/26–8/8</div>
     <div class="badge"><span class="sw" style="background:var(--stat);border:1px dashed #CCC"></span> 统计外推 8/9–31</div>
   </div>
 
   <div class="stats">
-    <div class="stat"><div class="k">7/1–16 实况降雨</div><div class="v">801<small>mm</small></div></div>
-    <div class="stat"><div class="k">7/17–25 预报降雨</div><div class="v">~35<small>mm</small></div></div>
-    <div class="stat"><div class="k">7月 实况+预报</div><div class="v">~836<small>mm</small></div></div>
+    <div class="stat"><div class="k">7/1–19 实况降雨</div><div class="v">895<small>mm</small></div></div>
+    <div class="stat"><div class="k">7/20–25 预报降雨</div><div class="v">~110<small>mm</small></div></div>
+    <div class="stat"><div class="k">7月 实况+预报</div><div class="v">~1005<small>mm</small></div></div>
     <div class="stat"><div class="k">汛期展望(6–9月)</div><div class="v">510–590<small>mm</small></div></div>
   </div>
 
@@ -89,10 +89,10 @@
 
 <script>
 // ===== 气温数据 =====
-const aHi=[36,37,37,37,34,35,34,34,35,30,30,29,34,34,35,34];
-const aLo=[22,24,26,25,24,22,23,24,26,25,25,25,25,26,25,26];
-const fHi=[32,29,32,30,31,30,32,33,34];
-const fLo=[26,24,24,25,23,25,23,25,26];
+const aHi=[36,37,37,37,34,35,34,34,35,30,30,29,34,34,35,34,31,32,33];
+const aLo=[22,24,26,25,24,22,23,24,26,25,25,25,25,26,25,26,24,23,24];
+const fHi=[31,30,31,32,33,34];
+const fLo=[23,23,25,25,25,26];
 const f2Hi=[33,33,33,33,33,33,33,33,33,32,32,32,32,32];
 const f2Lo=[25,25,25,25,25,25,25,25,25,24,24,24,24,24];
 const pHi=[34,34,32,31,30,32,32,30,33,32,27,32,31,33,29,27,33,32,23,28,28,30,31];
@@ -100,13 +100,13 @@ const pLo=[24,25,25,23,23,24,25,25,25,25,25,25,25,24,22,22,23,22,21,23,21,23,23]
 const hi=aHi.concat(fHi,f2Hi,pHi), lo=aLo.concat(fLo,f2Lo,pLo);
 
 // ===== 降雨量 =====
-const aPrec=[6.14,0.90,52.63,76.00,76.00,2.60,41.27,15.43,36.35,139.75,303.25,48.65,0.05,0.82,0,0.74];
-const fPrec=[0,0,0,5,15,0,15,0,0];
+const aPrec=[6.14,0.90,52.63,76.00,76.00,2.60,41.27,15.43,36.35,139.75,303.25,48.65,0.05,0.82,0,0.74,36.86,45.33,12.16];
+const fPrec=[65,5,35,0,5,0];
 const f2Prec=[0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 const pPrec=[0.2,0,0.5,30.7,2.2,19.7,4.3,5.2,1.1,0.2,26.6,10.5,10.2,1.1,1.4,0.2,0.3,3.9,50.7,0.3,0.3,0.1,12.8];
 const prec=aPrec.concat(fPrec,f2Prec,pPrec);
 
-const zoneA=16, zoneB=25, zoneC=39, zoneD=62;
+const zoneA=19, zoneB=25, zoneC=39, zoneD=62;
 const N=prec.length;
 
 function zone(i){
@@ -168,7 +168,7 @@ svg.appendChild(el('line',{x1:X(30.5),y1:y0,x2:X(30.5),y2:pBase,stroke:'#CCC','s
 });
 
 // 区域标签
-[{x:X(4.5),t:'实况',c:'#1B5E96'},{x:X(18),t:'预报',c:'#4A9ED6'},{x:X(32),t:'远参',c:'#999'},{x:X(50),t:'外推',c:'#BBB'}].forEach(l=>{
+[{x:X(9),t:'实况',c:'#1B5E96'},{x:X(22),t:'预报',c:'#4A9ED6'},{x:X(32),t:'远参',c:'#999'},{x:X(50),t:'外推',c:'#BBB'}].forEach(l=>{
   const tx=el('text',{x:l.x,y:y0-14,'text-anchor':'middle','font-size':10,fill:l.c});
   tx.textContent=l.t;svg.appendChild(tx);
 });
