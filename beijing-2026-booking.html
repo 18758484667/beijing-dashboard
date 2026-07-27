@@ -94,8 +94,8 @@
 <script>
 // 景点预约规则（advanceDays=提前可约天数；grab=每日放票时刻）
 const SPOTS = [
-  {name:"故宫博物院", sub:"最难抢·周一闭馆", advance:7, grab:"20:00", channel:"故宫博物院 微信小程序（唯一官方）", price:"旺季60元 / 学生20", closed:"周一闭馆", conflict:false, note:"门票及珍宝馆、钟表馆均提前7日20:00开售，不售当日票", refund:"未入园前可在小程序「我的订单」申请退票，全额退款；入园后不可退。珍宝馆/钟表馆随门票一并退。（以官方为准）"},
-  {name:"中国国家博物馆", sub:"免费·国博", advance:7, grab:"17:00", channel:"国家博物馆 小程序/公众号", price:"免费（特展另约）", closed:"周一闭馆", conflict:false, note:"每日17:00放票，提前7日内；每周限约1次", refund:"免费，未参观前可在订单页取消预约；逾期未取消可能影响后续预约资格。（以官方为准）"},
+  {name:"故宫博物院", sub:"最难抢·周一闭馆", advance:7, grab:"20:00", channel:"故宫博物院 微信小程序（唯一官方）", price:"旺季60元 / 学生20", closed:"周一闭馆", conflict:false, grabDate:"2026-08-09T20:00:00", note:"门票及珍宝馆、钟表馆均提前7日20:00开售，不售当日票", refund:"未入园前可在小程序「我的订单」申请退票，全额退款；入园后不可退。珍宝馆/钟表馆随门票一并退。（以官方为准）"},
+  {name:"中国国家博物馆", sub:"免费·国博", advance:7, grab:"17:00", channel:"国家博物馆 小程序/公众号", price:"免费（特展另约）", closed:"周一闭馆", conflict:false, grabDate:"2026-08-11T17:00:00", note:"每日17:00放票，提前7日内；每周限约1次", refund:"免费，未参观前可在订单页取消预约；逾期未取消可能影响后续预约资格。（以官方为准）"},
   {name:"天安门广场·升旗", sub:"免费·须选升旗时段", advance:9, grab:"12:00", channel:"天安门广场预约参观 小程序", price:"免费", closed:"无", conflict:false, note:"提前1–9天，未来10日内名额；观升旗须单独约「升旗」时段，约广场≠能看升旗", refund:"免费，未到访前可取消预约；无需退款。（以官方为准）"},
   {name:"天安门城楼", sub:"安检极严", advance:7, grab:"17:00", channel:"天安门城楼参观预约 公众号", price:"15元", closed:"周一闭馆", conflict:false, note:"建议不带包/水/充电宝", refund:"15元，未登楼前可退全额；登楼后不可退。（以官方为准）"},
   {name:"天坛公园", sub:"买联票更划算", advance:7, grab:"21:00", channel:"畅游公园 / 天坛公园 公众号", price:"联票34元(旺)/大门票15", closed:"核心景点周一上午闭", conflict:false, note:"每晚21:00放票，可提前1–7天；只买大门票进不了祈年殿", refund:"联票/大门票未入园前可退，在原购票渠道申请；入园后不可退。（以官方为准）"},
@@ -130,7 +130,7 @@ function render(){
     }
     html += `<div class="row ${s.conflict?'conflict':''}">
       <div class="name">${s.name}<small>${s.sub}</small></div>
-      <div class="cell"><div class="k">放票时刻（抢票点）</div><div class="grab">${s.grab}</div></div>
+      <div class="cell"><div class="k">放票时刻（抢票点）</div><div class="grab">${s.grab}</div>${s.grabDate?`<div class="cd" data-target="${s.grabDate}" style="font-size:12px;color:#E91E63;font-weight:700;margin-top:5px;font-variant-numeric:tabular-nums;">⏳ 计算中…</div>`:''}</div>
       <div class="cell"><div class="k">${kLabel}</div><div class="${latestCls}">${latestTxt}</div><div class="closed">${latestSub}</div></div>
       <div class="cell"><div class="ch">${s.channel}</div><div class="price">票价：${s.price}</div><div class="note">${s.note}</div><span class="refund" tabindex="0">ⓘ 退票规则<span class="pop">${s.refund}</span></span></div>
     </div>`;
@@ -138,6 +138,17 @@ function render(){
   grid.innerHTML = html;
 }
 render();
+function tick(){
+  var now=new Date();
+  document.querySelectorAll('.cd').forEach(function(el){
+    var t=new Date(el.getAttribute('data-target'));
+    var diff=t-now;
+    if(diff<=0){el.textContent='🎉 已开抢！';el.style.color='#2e7d54';return;}
+    var d=Math.floor(diff/86400000),h=Math.floor(diff%86400000/3600000),m=Math.floor(diff%3600000/60000),s=Math.floor(diff%60000/1000);
+    el.textContent='⏳ 距开抢 '+(d>0?d+'天 ':'')+('0'+h).slice(-2)+':'+('0'+m).slice(-2)+':'+('0'+s).slice(-2);
+  });
+}
+tick(); setInterval(tick,1000);
 </script>
 </body>
 </html>

@@ -129,6 +129,39 @@
   <!-- MOBILE-VIEW-END -->
   </div>
 
+  <!-- 抢票倒计时（独立区块，不在 MOBILE-VIEW 锚点内，sync 脚本不覆盖；JS 实时计算） -->
+  <div class="mcard grab-cd" style="--mc:#E91E63;margin-top:2px;">
+    <div class="mhead"><span class="lt"><span class="dot" style="background:#E91E63"></span>🎫 抢票倒计时</span><a class="go" href="beijing-2026-booking.html" style="text-decoration:none;">去时间表 ↗</a></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-top:1px solid #f3f4f6;">
+      <span style="font-weight:600;font-size:14px;">🏯 故宫 <span style="color:#8A8A8A;font-weight:400;font-size:11px;">8/16参观</span></span>
+      <span id="cd-gugong" style="font-variant-numeric:tabular-nums;font-weight:800;color:#E91E63;font-size:16px;">—</span>
+      <span style="font-size:11px;color:#8A8A8A;">8/9 20:00开抢</span>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-top:1px solid #f3f4f6;">
+      <span style="font-weight:600;font-size:14px;">🏛️ 国博 <span style="color:#8A8A8A;font-weight:400;font-size:11px;">8/18参观</span></span>
+      <span id="cd-guobo" style="font-variant-numeric:tabular-nums;font-weight:800;color:#E91E63;font-size:16px;">—</span>
+      <span style="font-size:11px;color:#8A8A8A;">8/11 17:00开抢</span>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var targets=[{id:'cd-gugong',t:new Date(2026,7,9,20,0,0)},{id:'cd-guobo',t:new Date(2026,7,11,17,0,0)}];
+    function p(n){return (n<10?'0':'')+n;}
+    function tick(){
+      var now=new Date();
+      targets.forEach(function(o){
+        var el=document.getElementById(o.id); if(!el) return;
+        var diff=o.t-now;
+        if(diff<=0){el.textContent='🎉 已开抢';el.style.color='#2e7d54';return;}
+        var d=Math.floor(diff/86400000),h=Math.floor(diff%86400000/3600000),m=Math.floor(diff%3600000/60000),s=Math.floor(diff%60000/1000);
+        el.textContent=(d>0?d+'天 ':'')+p(h)+':'+p(m)+':'+p(s);
+      });
+    }
+    tick(); setInterval(tick,1000);
+  })();
+  </script>
+
   <!-- ===== 桌面端 panel（iframe 全展开） ===== -->
   <div class="panel">
     <div class="bar">
