@@ -232,8 +232,8 @@ def build_mobile_view(flights, wh, hotels):
     <a class="mcard" style="--mc:#2E8B57" href="beijing-2026-myflights.html">
       <div class="mhead"><span class="lt"><span class="dot" style="background:#2E8B57"></span>机票价格（指定6航班）</span><span class="go">完整详情 ↗</span></div>
       <table class="mtbl">
-        <tr class="sec"><td colspan="3">去程 8/15 宁波→北京（大兴）</td></tr>
-{dep_rows}        <tr class="sec"><td colspan="3">回程 8/21 北京→宁波 · ⚠️全线涨价</td></tr>
+        <tr class="sec"><td colspan="3">去程 8/15 宁波→北京（大兴）· ⚠️全线涨价</td></tr>
+{dep_rows}        <tr class="sec"><td colspan="3">回程 8/21 北京→宁波 · ↓全线降价</td></tr>
 {ret_rows}      </table>
     </a>'''
 
