@@ -60,6 +60,20 @@ def flight_mut(trend):
     return "✓确认"
 
 
+def trend_label(codes, flights):
+    """根据去程/回程各自 3 班的有无涨跌，生成区段标题尾标。"""
+    n = len(codes)
+    ups = [c for c in codes if flights[c][1] and flights[c][1][0] == "↑"]
+    downs = [c for c in codes if flights[c][1] and flights[c][1][0] == "↓"]
+    if ups and downs:
+        return "分化(有涨有跌)"
+    if ups:
+        return "↑全线涨价" if len(ups) == n else f"↑{len(ups)}班涨价"
+    if downs:
+        return "↓全线降价" if len(downs) == n else f"↓{len(downs)}班降价"
+    return "持平·✓确认"
+
+
 # ---------------- 天气 ----------------
 def rain_level(p):
     if p >= 80:
@@ -232,8 +246,8 @@ def build_mobile_view(flights, wh, hotels):
     <a class="mcard" style="--mc:#2E8B57" href="beijing-2026-myflights.html">
       <div class="mhead"><span class="lt"><span class="dot" style="background:#2E8B57"></span>机票价格（指定6航班）</span><span class="go">完整详情 ↗</span></div>
       <table class="mtbl">
-        <tr class="sec"><td colspan="3">去程 8/15 宁波→北京（大兴）· ⚠️全线涨价</td></tr>
-{dep_rows}        <tr class="sec"><td colspan="3">回程 8/21 北京→宁波 · ↓全线降价</td></tr>
+        <tr class="sec"><td colspan="3">去程 8/15 宁波→北京（大兴）· {trend_label(dep_codes, flights)}</td></tr>
+{dep_rows}        <tr class="sec"><td colspan="3">回程 8/21 北京→宁波 · {trend_label(ret_codes, flights)}</td></tr>
 {ret_rows}      </table>
     </a>'''
 
