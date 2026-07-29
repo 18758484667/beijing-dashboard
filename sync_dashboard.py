@@ -267,7 +267,7 @@ def build_mobile_view(flights, wh, hotels, budget):
         <tr><td>总预算（估）</td><td class="pri">¥{budget}</td><td class="mut">含机建燃油</td></tr>
         <tr><td>机票</td><td>¥6660</td><td class="mut">往返·含税</td></tr>
         <tr><td>酒店</td><td>¥6114</td><td class="mut">6晚·待付</td></tr>
-        <tr><td>餐饮+门票+包车+接送</td><td>¥3868</td><td class="mut">特色餐/景点/车/接送</td></tr>
+        <tr><td>餐饮+门票+包车+接送</td><td>¥4008</td><td class="mut">特色餐/景点/车/接送</td></tr>
       </table>
     </a>'''
 
