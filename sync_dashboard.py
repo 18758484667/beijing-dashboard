@@ -20,6 +20,7 @@ DASH = os.path.join(BASE, "beijing-2026-dashboard.html")
 FLIGHTS = os.path.join(BASE, "beijing-2026-myflights.html")
 WEATHER = os.path.join(BASE, "beijing-2026-7-8-weather.html")
 HOTELS = os.path.join(BASE, "beijing-2026-hotels-spec.html")
+BUDGET = os.path.join(BASE, "beijing-2026-budget.html")
 
 START = "<!-- MOBILE-VIEW-START -->"
 END = "<!-- MOBILE-VIEW-END -->"
@@ -153,8 +154,17 @@ def parse_hotels(html):
     return spec_c + reco_c  # [东方,京伦,国际艺苑,金龙, 康福瑞,如家neo,汉庭]
 
 
+# ---------------- 预算 ----------------
+def parse_budget(html):
+    """返回预算总额字符串（如 '16,042'），失败返回 None。"""
+    m = re.search(r'<b id="budgetTotal">¥([\d,]+)</b>', html)
+    if not m:
+        return None
+    return m.group(1)
+
+
 # ---------------- 组装 mobile-view ----------------
-def build_mobile_view(flights, wh, hotels):
+def build_mobile_view(flights, wh, hotels, budget):
     today = datetime.date.today()
     today_label = f"今日{today.month}/{today.day}"
     hi_t, lo_t, prec_t, total = wh
@@ -249,6 +259,16 @@ def build_mobile_view(flights, wh, hotels):
         <tr class="sec"><td colspan="3">去程 8/15 宁波→北京（大兴）· {trend_label(dep_codes, flights)}</td></tr>
 {dep_rows}        <tr class="sec"><td colspan="3">回程 8/21 北京→宁波 · {trend_label(ret_codes, flights)}</td></tr>
 {ret_rows}      </table>
+    </a>
+
+    <a class="mcard" style="--mc:#7c3aed" href="beijing-2026-budget.html">
+      <div class="mhead"><span class="lt"><span class="dot" style="background:#7c3aed"></span>旅游预算总览</span><span class="go">完整明细 ↗</span></div>
+      <table class="mtbl">
+        <tr><td>总预算（估）</td><td class="pri">¥{budget}</td><td class="mut">含机建燃油</td></tr>
+        <tr><td>机票</td><td>¥6660</td><td class="mut">往返·含税</td></tr>
+        <tr><td>酒店</td><td>¥6114</td><td class="mut">6晚·待付</td></tr>
+        <tr><td>餐饮+门票+包车</td><td>¥3268</td><td class="mut">特色餐/景点/已付车</td></tr>
+      </table>
     </a>'''
 
 
@@ -261,6 +281,7 @@ def main():
     flights = parse_flights(read(FLIGHTS))
     wh = parse_weather(read(WEATHER))
     hotels = parse_hotels(read(HOTELS))
+    budget = parse_budget(read(BUDGET))
     if flights is None:
         print("[ERROR] 机票页解析失败，跳过写入。")
         return 1
@@ -270,8 +291,11 @@ def main():
     if hotels is None:
         print("[ERROR] 酒店页解析失败，跳过写入。")
         return 1
+    if budget is None:
+        print("[ERROR] 预算页解析失败，跳过写入。")
+        return 1
 
-    new_block = build_mobile_view(flights, wh, hotels)
+    new_block = build_mobile_view(flights, wh, hotels, budget)
     pre = dash.split(START, 1)[1]
     old_block = pre.split(END, 1)[0]
     if old_block.strip() == new_block.strip():
@@ -287,6 +311,7 @@ def main():
     print(f"[SYNC] 机票: {fv}")
     print(f"[SYNC] 天气: 今日{wh[0]}℃/{wh[1]}℃ 雨{wh[2]}mm({rain_level(wh[2])}) 7月累计~{wh[3]}mm")
     print(f"[SYNC] 酒店: 东方{hotels[0]} 康福瑞{hotels[4]} 如家{hotels[5]} 汉庭{hotels[6]}")
+    print(f"[SYNC] 预算总额: ¥{budget}")
     print("[DONE] 已重写首页 mobile-view 概览表格。")
     return 0
 

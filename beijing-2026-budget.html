@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>北京暑期家庭游 · 旅游预算</title>
+<style>
+  :root{
+    --bg:#f6f8fb; --card:#fff; --line:#e3e8ef; --ink:#1f2a37; --mut:#6b7785;
+    --user:#7c3aed; --ok:#2e7d54; --warn:#b8860b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.55;padding:22px 14px 44px}
+  .wrap{max-width:880px;margin:0 auto}
+  header{margin-bottom:14px;border-bottom:2px solid var(--user);padding-bottom:12px}
+  h1{font-size:22px;margin:0}
+  .sub{color:var(--mut);font-size:13px;margin-top:6px;line-height:1.6}
+  .sub b{color:var(--user)}
+  section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 16px 14px;margin:14px 0}
+  h2{font-size:16px;margin:0 0 12px}
+  .total-box{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border-radius:12px;padding:18px 20px;margin-bottom:16px;text-align:center}
+  .t-lab{font-size:13px;opacity:.9;letter-spacing:.5px}
+  .t-val{font-size:36px;font-weight:800;margin:4px 0;line-height:1.1}
+  .t-val span{font-size:15px;font-weight:400;opacity:.85;margin-left:6px}
+  .t-per{font-size:12.5px;opacity:.92;margin-top:2px}
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:520px}
+  th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{background:#f4f0fb;color:var(--mut);font-weight:600;font-size:12.5px;white-space:nowrap}
+  td.amt{font-weight:700;color:var(--user);white-space:nowrap}
+  tr.subtotal td{background:#f4f0fb;font-weight:700}
+  tr.subtotal td.amt{color:#5b21b6}
+  .mut{color:var(--mut);font-size:12px}
+  .note{font-size:12px;color:var(--mut);margin-top:11px;line-height:1.65}
+  .note b{color:var(--warn)}
+  .paid{display:inline-block;font-size:10.5px;font-weight:700;border-radius:6px;padding:1px 7px;background:#e8f5ee;color:var(--ok);vertical-align:middle}
+  .pend{display:inline-block;font-size:10.5px;font-weight:700;border-radius:6px;padding:1px 7px;background:#fbf3df;color:var(--warn);vertical-align:middle}
+  .tips ul{padding-left:18px;font-size:13px;line-height:1.95}
+  .tips b{color:var(--user)}
+  footer{color:var(--mut);font-size:12px;margin-top:6px;line-height:1.7}
+  @media(max-width:680px){
+    body{padding:16px 11px 38px}
+    h1{font-size:19px}
+    .sub{font-size:12px}
+    section{padding:13px 12px 12px;margin:12px 0}
+    h2{font-size:15px}
+    .t-val{font-size:30px}
+    table{font-size:12.5px;min-width:480px}
+    th,td{padding:7px 8px}
+    .note{font-size:11.5px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>北京暑期家庭游 · 旅游预算</h1>
+    <div class="sub">共 <b>6 人</b>：2 中年 + 2 老年(60+) + 1 儿童(9岁·140cm) + 1 婴儿(18个月) ｜ 行程 8/15–22 ｜ 预算核验：<b>2026-07-29</b></div>
+  </header>
+
+  <div class="total-box">
+    <div class="t-lab">总预算（估算）</div>
+    <div class="t-val"><b id="budgetTotal">¥16,042</b><span>≈ ¥16,000</span></div>
+    <div class="t-per">人均约 ¥2,674（按6人） · ¥3,136（按5个全人）</div>
+  </div>
+
+  <section>
+    <h2>📊 预算汇总</h2>
+    <div class="table-scroll"><table>
+      <thead><tr><th>项目</th><th>金额</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>🏨 酒店</td><td class="amt">¥6114</td><td>6 晚 · 北京东方饭店（前门/虎坊桥）<span class="pend" style="margin-left:6px">待付</span></td></tr>
+        <tr><td>✈️ 机票</td><td class="amt">¥6660</td><td>往返 · 含机建燃油 · 儿童按全价50%或成人折扣 · 婴儿全价10%<span class="pend" style="margin-left:6px">待付</span></td></tr>
+        <tr><td>🚐 包车</td><td class="amt">¥598</td><td>慕田峪长城包车 <span class="paid" style="margin-left:6px">已付</span></td></tr>
+        <tr><td>🎫 门票</td><td class="amt">¥470</td><td>故宫 / 慕田峪 / 颐和园 / 圆明园 / 恭王府</td></tr>
+        <tr><td>🍜 餐饮</td><td class="amt">¥2200</td><td>4 顿特色餐（四季民福/烤肉宛/南门涮肉/天兴居）</td></tr>
+        <tr><td>🚇 其他交通</td><td class="mut">¥0</td><td class="mut">市内地铁 / 打车 · 暂不计</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>✈️ 机票明细（往返 · 含税 · 按民航局规则）</h2>
+    <div class="table-scroll"><table>
+      <thead><tr><th>航段</th><th>航班</th><th>单价</th><th>人数</th><th>小计</th></tr></thead>
+      <tbody>
+        <tr><td>去程 8/15 宁波→北京</td><td>KN5996 中联航（大兴）</td><td>¥540</td><td>4</td><td>¥2160</td></tr>
+        <tr><td colspan="3">＋ 成人机建¥50＋燃油¥100／人（4 成人）</td><td>4</td><td>¥600</td></tr>
+        <tr><td>去程 · 儿童(9岁)</td><td>全价×50% 或 成人折扣</td><td>¥590–950</td><td>1</td><td>¥590–950</td></tr>
+        <tr><td>去程 · 婴儿(18月)</td><td>全价×10%（免机建/燃油）</td><td>¥180</td><td>1</td><td>¥180</td></tr>
+        <tr class="sec"><td colspan="4">去程小计</td><td class="amt">¥3530–3890</td></tr>
+        <tr><td>回程 8/22 北京→宁波</td><td>CA8387 国航（大兴）</td><td>¥460</td><td>4</td><td>¥1840</td></tr>
+        <tr><td colspan="3">＋ 成人机建¥50＋燃油¥100／人（4 成人）</td><td>4</td><td>¥600</td></tr>
+        <tr><td>回程 · 儿童(9岁)</td><td>全价×50% 或 成人折扣</td><td>¥510–950</td><td>1</td><td>¥510–950</td></tr>
+        <tr><td>回程 · 婴儿(18月)</td><td>全价×10%（免机建/燃油）</td><td>¥180</td><td>1</td><td>¥180</td></tr>
+        <tr class="sec"><td colspan="4">回程小计</td><td class="amt">¥3130–3570</td></tr>
+        <tr class="subtotal"><td colspan="4">机票合计（往返 · 含税）</td><td class="amt">¥6660–7460</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">注（民航局规则 + 2026/7/5 税费标准）：① <b>成人</b> = 折扣经济舱 + 机建¥50 + 燃油¥100（宁波↔北京 1338km，属 800km 以上档）。② <b>儿童(9岁)</b> 可选：A. 严格儿童票 = 全价票×50%（约¥900/段，免机建、燃油减半¥50）；B. 平台常自动推荐按成人折扣票购买 + 儿童税费优惠（¥540/¥460 票价 + 免机建 + 燃油¥50），更省。<b>本预算主推方案 B（¥6660）</b>。③ <b>婴儿(18月)</b> = 全价票×10%（约¥180/段），免机建、免燃油，不占座。④ <b>全价票(Y舱)</b>约¥1800（携程 8 折¥1440 反推，以航司 App 显示为准）。<b>票价每日波动</b>，下单前以实时价为准。</p>
+  </section>
+
+  <section>
+    <h2>🎫 门票明细（老人60+免费 · 9岁孩子半价 · 婴儿免费）</h2>
+    <div class="table-scroll"><table>
+      <thead><tr><th>景点</th><th>成人票</th><th>计算</th><th>小计</th></tr></thead>
+      <tbody>
+        <tr><td>故宫（旺季）</td><td>¥60</td><td>2中 × 60</td><td>¥120</td></tr>
+        <tr><td>慕田峪长城</td><td>¥45</td><td>2中 × 45 + 孩子半价 25</td><td>¥115</td></tr>
+        <tr><td>颐和园（旺季）</td><td>¥30</td><td>2中 × 30 + 孩子半价 15</td><td>¥75</td></tr>
+        <tr><td>圆明园</td><td>¥25</td><td>2中 × 25 + 孩子半价 12</td><td>¥62</td></tr>
+        <tr><td>恭王府</td><td>¥40</td><td>2中 × 40 + 孩子半价 20</td><td>¥100</td></tr>
+        <tr class="subtotal"><td colspan="3">门票合计</td><td class="amt">¥470</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">注：2 位老人(60+)凭有效证件多数景点免费（需预约免费票）；9 岁孩子 140cm 多数景点半价/学生票；婴儿免费。<b>另计</b>：慕田峪缆车/索道往返约 ¥140/人；颐和园/圆明园联票、故宫珍宝馆/钟表馆（各¥10）另计。</p>
+  </section>
+
+  <section>
+    <h2>🍜 餐饮明细（4 顿特色餐 · 按 5 个全人计）</h2>
+    <div class="table-scroll"><table>
+      <thead><tr><th>餐厅</th><th>类型</th><th>人均</th><th>小计</th></tr></thead>
+      <tbody>
+        <tr><td>四季民福</td><td>北京烤鸭</td><td>¥180</td><td>¥900</td></tr>
+        <tr><td>烤肉宛</td><td>北京烤肉（老字号）</td><td>¥100</td><td>¥500</td></tr>
+        <tr><td>南门涮肉</td><td>铜锅涮肉</td><td>¥115</td><td>¥575</td></tr>
+        <tr><td>天兴居</td><td>炒肝 / 早点</td><td>¥40</td><td>¥200</td></tr>
+        <tr class="subtotal"><td colspan="3">餐饮合计（仅 4 顿特色餐）</td><td class="amt">¥2200</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">注：按 5 个全人计（婴儿免）；9 岁孩子可按成人价约 7 折算更省。<b>另计</b>：全程 7 天其余日常餐（早餐/简餐/水果零食）估 ¥1500–2500。</p>
+  </section>
+
+  <section class="tips">
+    <h2>💡 预算说明</h2>
+    <ul>
+      <li>总计 <b>¥16,042</b> 为「酒店 + 机票 + 包车 + 门票 + 特色餐」估算（机票取主推方案 B ¥6660）；若儿童走严格全价 50% 方案 A，机票 ¥7460、总额约 <b>¥16,842</b>。<b>不含</b>市内交通、长城缆车、联票、全程日常餐。</li>
+      <li>若计入日常餐(¥1500–2500)与长城缆车/联票(¥500–900)，<b>实际全程参考区间约 ¥17,500–19,500</b>。</li>
+      <li>已付：包车 ¥598；待付：酒店 / 机票 / 门票 / 餐饮等。</li>
+      <li>机票、酒店价格每日波动，下单前以 App 实时价为准；景点老人/孩子/婴儿优惠以官方现场核验证件为准。</li>
+    </ul>
+  </section>
+
+  <footer>
+    数据说明：本页为家庭游预算估算，金额为当前可得的合理估计（机票按 variflight 现价、酒店按已订 6 晚价、门票/餐饮按公开价与人均估算）。最终花费以实际预订与现场为准。
+  </footer>
+</div>
+</body>
+</html>
