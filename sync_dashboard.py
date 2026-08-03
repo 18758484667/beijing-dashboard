@@ -42,7 +42,7 @@ def arr(html, name):
 def parse_flights(html):
     """返回 {航班号: (优先日价格int, trend或None)}；trend = (箭头字符, 金额int)"""
     out = {}
-    for code in ["KN5996", "NS8028", "MU5150", "CA8387", "CA1541", "CA1535"]:
+    for code in ["KN5996", "MU5150", "CA8387", "CA1541", "CA1535"]:
         m = re.search(code + r"\s*<b>¥(\d+)</b>(?:（([↓↑])¥(\d+))?", html)
         if not m:
             return None  # 任一航班缺失 -> 视为解析失败
@@ -179,13 +179,12 @@ def build_mobile_view(flights, wh, hotels, budget):
     # 机票行（顺序：去程3 + 回程3）
     fmap = {
         "KN5996": ("KN5996 中联航", flights["KN5996"]),
-        "NS8028": ("NS8028 河北航", flights["NS8028"]),
         "MU5150": ("MU5150 东航", flights["MU5150"]),
         "CA8387": ("CA8387 国航(大兴)", flights["CA8387"]),
         "CA1541": ("CA1541 国航(首都)", flights["CA1541"]),
         "CA1535": ("CA1535 国航(首都)", flights["CA1535"]),
     }
-    dep_codes = ["KN5996", "NS8028", "MU5150"]
+    dep_codes = ["KN5996", "MU5150"]
     ret_codes = ["CA8387", "CA1541", "CA1535"]
     dep_rows = ""
     for c in dep_codes:
@@ -254,7 +253,7 @@ def build_mobile_view(flights, wh, hotels, budget):
     </a>
 
     <a class="mcard" style="--mc:#2E8B57" href="beijing-2026-myflights.html">
-      <div class="mhead"><span class="lt"><span class="dot" style="background:#2E8B57"></span>机票价格（指定6航班）</span><span class="go">完整详情 ↗</span></div>
+      <div class="mhead"><span class="lt"><span class="dot" style="background:#2E8B57"></span>机票价格（指定5航班）</span><span class="go">完整详情 ↗</span></div>
       <table class="mtbl">
         <tr class="sec"><td colspan="3">去程 8/15 宁波→北京（大兴）· {trend_label(dep_codes, flights)}</td></tr>
 {dep_rows}        <tr class="sec"><td colspan="3">回程 8/22 北京→宁波 · {trend_label(ret_codes, flights)}</td></tr>
@@ -307,7 +306,7 @@ def main():
         f.write(new_dash)
 
     # 输出同步摘要
-    fv = " | ".join(f"{c}¥{flights[c][0]}" for c in ["KN5996", "NS8028", "MU5150", "CA8387", "CA1541", "CA1535"])
+    fv = " | ".join(f"{c}¥{flights[c][0]}" for c in ["KN5996", "MU5150", "CA8387", "CA1541", "CA1535"])
     print(f"[SYNC] 机票: {fv}")
     print(f"[SYNC] 天气: 今日{wh[0]}℃/{wh[1]}℃ 雨{wh[2]}mm({rain_level(wh[2])}) 7月累计~{wh[3]}mm")
     print(f"[SYNC] 酒店: 东方{hotels[0]} 康福瑞{hotels[4]} 如家{hotels[5]} 汉庭{hotels[6]}")
