@@ -149,7 +149,7 @@ for(let t=tMin;t<=tMax;t+=4){
 });
 
 // 日期标签
-function dl(i){const d=i+1;return i<31?'7/'+d:'8/'+(d-31);}
+function dl(i){const d=new Date(2026,6,1+i);return (d.getMonth()+1)+'/'+d.getDate();}
 for(let i=0;i<N;i+=5){
   const tx=el('text',{x:X(i),y:H-14,'text-anchor':'middle','font-size':10,fill:'#1A1A1A'});
   tx.textContent=dl(i);svg.appendChild(tx);
@@ -159,8 +159,9 @@ for(let i=0;i<N;i+=5){
 if(45<N){svg.appendChild(el('line',{x1:X(45),y1:y0,x2:X(45),y2:pBase,stroke:'#FF5C1A','stroke-width':1.5,'stroke-dasharray':'5 3',opacity:.85}));const tl=el('text',{x:X(45),y:y0-26,'text-anchor':'middle','font-size':11,fill:'#FF5C1A','font-weight':700});tl.textContent='▶ 行程开始 8/15';svg.appendChild(tl);}
 
 // 月份标签
-[{x:X(15),t:'7月'},{x:X(46),t:'8月'}].forEach(l=>{const tx=el('text',{x:l.x,y:y0-6,'text-anchor':'middle','font-size':11,fill:'#1A1A1A','font-weight':600});tx.textContent=l.t;svg.appendChild(tx);});
+[{x:X(15),t:'7月'},{x:X(46),t:'8月'},{x:X(67),t:'9月'}].forEach(l=>{const tx=el('text',{x:l.x,y:y0-6,'text-anchor':'middle','font-size':11,fill:'#1A1A1A','font-weight':600});tx.textContent=l.t;svg.appendChild(tx);});
 svg.appendChild(el('line',{x1:X(30.5),y1:y0,x2:X(30.5),y2:pBase,stroke:'#CCC','stroke-width':1,'stroke-dasharray':'4 4'}));
+svg.appendChild(el('line',{x1:X(61.5),y1:y0,x2:X(61.5),y2:pBase,stroke:'#CCC','stroke-width':1,'stroke-dasharray':'4 4'}));
 
 // 区域分隔线
 [zoneA-0.5, zoneB-0.5, zoneC-0.5].forEach(i=>{
