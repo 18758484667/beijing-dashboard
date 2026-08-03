@@ -123,7 +123,7 @@ def parse_weather(html):
     lo_t = int(round(lo[idx]))
     prec_t = int(round(prec[idx]))
 
-    m = re.search(r"7月 实况\+预报</div><div class=\"v\">~?(\d+)<small>mm</small>", html)
+    m = re.search(r"7.{0,3}8月 累计</div><div class=\"v\">~?(\d+)<small>mm</small>", html)
     total = m.group(1) if m else "?"
     return (hi_t, lo_t, prec_t, total)
 
@@ -248,7 +248,7 @@ def build_mobile_view(flights, wh, hotels, budget):
       <div class="mhead"><span class="lt"><span class="dot" style="background:#0EA5A4"></span>天气 / 降雨量</span><span class="go">完整详情 ↗</span></div>
       <table class="mtbl">
         <tr><td>{today_label}</td><td class="pri">{weather_pri}</td><td class="mut">{weather_mut}</td></tr>
-        <tr><td>7月累计</td><td>~{total}mm</td><td class="mut">实况+预报</td></tr>
+        <tr><td>7–8月累计</td><td>~{total}mm</td><td class="mut">实况+预报</td></tr>
         <tr><td>8月展望</td><td>雨季</td><td class="mut">伞随身·防短时暴雨</td></tr>
       </table>
     </a>
@@ -257,7 +257,7 @@ def build_mobile_view(flights, wh, hotels, budget):
       <div class="mhead"><span class="lt"><span class="dot" style="background:#2E8B57"></span>机票价格（指定6航班）</span><span class="go">完整详情 ↗</span></div>
       <table class="mtbl">
         <tr class="sec"><td colspan="3">去程 8/15 宁波→北京（大兴）· {trend_label(dep_codes, flights)}</td></tr>
-{dep_rows}        <tr class="sec"><td colspan="3">回程 8/21 北京→宁波 · {trend_label(ret_codes, flights)}</td></tr>
+{dep_rows}        <tr class="sec"><td colspan="3">回程 8/22 北京→宁波 · {trend_label(ret_codes, flights)}</td></tr>
 {ret_rows}      </table>
     </a>
 
@@ -265,7 +265,7 @@ def build_mobile_view(flights, wh, hotels, budget):
       <div class="mhead"><span class="lt"><span class="dot" style="background:#7c3aed"></span>旅游预算总览</span><span class="go">完整明细 ↗</span></div>
       <table class="mtbl">
         <tr><td>总预算（估）</td><td class="pri">¥{budget}</td><td class="mut">含机建燃油</td></tr>
-        <tr><td>机票</td><td>¥6660</td><td class="mut">往返·含税</td></tr>
+        <tr><td>机票</td><td>¥7410</td><td class="mut">往返·含税</td></tr>
         <tr><td>酒店</td><td>¥6114</td><td class="mut">6晚·待付</td></tr>
         <tr><td>餐饮+门票+缆车+包车+接送</td><td>¥4495.5</td><td class="mut">特色餐/景点/缆车/车/接送</td></tr>
       </table>
