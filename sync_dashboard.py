@@ -124,15 +124,25 @@ def parse_hotels(html):
 
 # ---------------- 预算 ----------------
 def parse_budget(html):
-    """返回预算总额字符串（如 '16,042'），失败返回 None。"""
+    """返回 (总额字符串, [(项目,金额,购买途径), ...])，失败返回 None。"""
     m = re.search(r'<b id="budgetTotal">¥([\d,]+)</b>', html)
     if not m:
         return None
-    return m.group(1)
+    total = m.group(1)
+    sec = re.search(r'📊 预算汇总.*?<tbody>(.*?)</tbody>', html, re.S)
+    rows = []
+    if sec:
+        for rm in re.finditer(
+            r'<tr><td>([^<]+)</td><td[^>]*>¥?([\d.]+)</td><td>([^<]*)</td>', sec.group(1)):
+            rows.append((rm.group(1).strip(), rm.group(2).strip(), rm.group(3).strip()))
+    if not rows:
+        return None
+    return (total, rows)
 
 
 # ---------------- 组装 mobile-view ----------------
 def build_mobile_view(wh, hotels, budget):
+    budget_total, budget_rows = budget
     today = datetime.date.today()
     today_label = f"今日{today.month}/{today.day}"
     hi_t, lo_t, prec_t, total = wh
@@ -145,6 +155,11 @@ def build_mobile_view(wh, hotels, budget):
         weather_mut = f"无雨·{rlevel}"
 
     # 机票卡片见下方「已购机票」区块（固定内容，不再解析价格）
+
+    # 预算卡片行（解析自预算页汇总表，含金额与购买途径）
+    budget_rows_html = ""
+    for _lbl, _amt, _ch in budget_rows:
+        budget_rows_html += f'        <tr><td>{_lbl}</td><td class="pri">¥{_amt}</td><td class="mut">{_ch}</td></tr>\n'
 
     # 酒店行
     spec = hotels[:4]
@@ -202,7 +217,7 @@ def build_mobile_view(wh, hotels, budget):
     <a class="mcard" style="--mc:#2E8B57" href="beijing-2026-myflights.html">
       <div class="mhead"><span class="lt"><span class="dot" style="background:#2E8B57"></span>已购机票（往返）</span><span class="go">完整详情 ↗</span></div>
       <table class="mtbl">
-        <tr><td>去程 8/15</td><td class="pri">KN5996</td><td class="mut">宁波→北京·大兴</td></tr>
+        <tr><td>去程 8/15</td><td class="pri">CA1542</td><td class="mut">宁波→北京·大兴</td></tr>
         <tr><td>回程 8/22</td><td class="pri">CA8387</td><td class="mut">北京→宁波·大兴</td></tr>
         <tr class="sec"><td colspan="3">已购 · 实付 ¥6248（携程·含税）</td></tr>
       </table>
@@ -211,10 +226,8 @@ def build_mobile_view(wh, hotels, budget):
     <a class="mcard" style="--mc:#7c3aed" href="beijing-2026-budget.html">
       <div class="mhead"><span class="lt"><span class="dot" style="background:#7c3aed"></span>旅游预算总览</span><span class="go">完整明细 ↗</span></div>
       <table class="mtbl">
-        <tr><td>总预算（估）</td><td class="pri">¥{budget}</td><td class="mut">含机建燃油</td></tr>
-        <tr><td>机票</td><td>¥6248</td><td class="mut">往返·已付·携程</td></tr>
-        <tr><td>酒店</td><td>¥6114</td><td class="mut">6晚·已付·同程</td></tr>
-        <tr><td>餐饮+门票+缆车+包车+接送</td><td>¥4495.5</td><td class="mut">特色餐/景点/缆车/车/接送</td></tr>
+{budget_rows_html}        <tr class="sec"><td colspan="3">总预算（估）</td></tr>
+        <tr><td><b>合计</b></td><td class="pri">¥{budget_total}</td><td class="mut">人均¥2,810</td></tr>
       </table>
     </a>'''
 
@@ -250,10 +263,10 @@ def main():
         f.write(new_dash)
 
     # 输出同步摘要
-    print(f"[SYNC] 机票: 已购 ¥6248（携程·KN5996/CA8387）")
+    print(f"[SYNC] 机票: 已购 ¥6248（携程·CA1542/CA8387）")
     print(f"[SYNC] 天气: 今日{wh[0]}℃/{wh[1]}℃ 雨{wh[2]}mm({rain_level(wh[2])}) 7月累计~{wh[3]}mm")
     print(f"[SYNC] 酒店: 东方{hotels[0]} 康福瑞{hotels[4]} 如家{hotels[5]} 汉庭{hotels[6]}")
-    print(f"[SYNC] 预算总额: ¥{budget}")
+    print(f"[SYNC] 预算总额: ¥{budget[0]}")
     print("[DONE] 已重写首页 mobile-view 概览表格。")
     return 0
 
