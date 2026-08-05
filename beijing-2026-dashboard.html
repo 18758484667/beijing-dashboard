@@ -215,7 +215,7 @@
       <div class="t"><span class="dot" style="background:#7c3aed"></span>旅游预算</div>
       <a href="beijing-2026-budget.html" target="_blank">↗ 单独打开</a>
     </div>
-    <iframe src="beijing-2026-budget.html" style="height:1400px" loading="lazy"></iframe>
+    <iframe src="beijing-2026-budget.html" style="height:1400px"></iframe>
     <div class="fallback">内嵌未显示？<a href="beijing-2026-budget.html" target="_blank">点此单独打开预算页</a></div>
   </div>
 
@@ -247,6 +247,8 @@
   window.addEventListener('resize',()=>{clearTimeout(rT);rT=setTimeout(()=>frames.forEach(fitFrame),120);});
   frames.forEach(f=>{
     f.addEventListener('load',()=>{
+      f.style.display='block';
+      if(f.nextElementSibling && f.nextElementSibling.classList.contains('fallback')) f.nextElementSibling.style.display='none';
       fitFrame(f);
       setTimeout(()=>fitFrame(f),350);
       setTimeout(()=>fitFrame(f),900);
@@ -258,14 +260,14 @@
         }
       }catch(e){}
     });
-    f.addEventListener('error',()=>{f.style.display='none';f.nextElementSibling.style.display='block';});
+    f.addEventListener('error',()=>{f.style.display='none';if(f.nextElementSibling && f.nextElementSibling.classList.contains('fallback')) f.nextElementSibling.style.display='block';});
     setTimeout(()=>{
       try{
         if(!f.contentDocument || (f.contentDocument.body && f.contentDocument.body.childElementCount===0)){
-          f.style.display='none';f.nextElementSibling.style.display='block';
+          f.style.display='none';if(f.nextElementSibling && f.nextElementSibling.classList.contains('fallback')) f.nextElementSibling.style.display='block';
         }
       }catch(e){}
-    },3500);
+    },6000);
   });
 </script>
 </body>
