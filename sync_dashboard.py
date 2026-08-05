@@ -39,40 +39,8 @@ def arr(html, name):
 
 
 # ---------------- 机票 ----------------
-def parse_flights(html):
-    """返回 {航班号: (优先日价格int, trend或None)}；trend = (箭头字符, 金额int)"""
-    out = {}
-    for code in ["KN5996", "MU5150", "CA8387", "CA1541", "CA1535"]:
-        m = re.search(code + r"\s*<b>¥(\d+)</b>(?:（([↓↑])¥(\d+))?", html)
-        if not m:
-            return None  # 任一航班缺失 -> 视为解析失败
-        price = int(m.group(1))
-        trend = None
-        if m.group(2):
-            trend = (m.group(2), int(m.group(3)))
-        out[code] = (price, trend)
-    return out
-
-
-def flight_mut(trend):
-    if trend:
-        arrow = "↓降" if trend[0] == "↓" else "↑涨"
-        return f"{arrow}¥{trend[1]}·✓确认"
-    return "✓确认"
-
-
-def trend_label(codes, flights):
-    """根据去程/回程各自 3 班的有无涨跌，生成区段标题尾标。"""
-    n = len(codes)
-    ups = [c for c in codes if flights[c][1] and flights[c][1][0] == "↑"]
-    downs = [c for c in codes if flights[c][1] and flights[c][1][0] == "↓"]
-    if ups and downs:
-        return "分化(有涨有跌)"
-    if ups:
-        return "↑全线涨价" if len(ups) == n else f"↑{len(ups)}班涨价"
-    if downs:
-        return "↓全线降价" if len(downs) == n else f"↓{len(downs)}班降价"
-    return "持平·✓确认"
+# 机票页已改为「已购记录」（携程实付 ¥6248），不再做每日价格追踪，
+# 故不再解析航班价格；航班卡片由 build_mobile_view 直接生成固定内容。
 
 
 # ---------------- 天气 ----------------
@@ -164,7 +132,7 @@ def parse_budget(html):
 
 
 # ---------------- 组装 mobile-view ----------------
-def build_mobile_view(flights, wh, hotels, budget):
+def build_mobile_view(wh, hotels, budget):
     today = datetime.date.today()
     today_label = f"今日{today.month}/{today.day}"
     hi_t, lo_t, prec_t, total = wh
@@ -176,28 +144,7 @@ def build_mobile_view(flights, wh, hotels, budget):
         weather_pri = f"{hi_t}℃/{lo_t}℃"
         weather_mut = f"无雨·{rlevel}"
 
-    # 机票行（顺序：去程3 + 回程3）
-    fmap = {
-        "KN5996": ("KN5996 中联航", flights["KN5996"]),
-        "MU5150": ("MU5150 东航", flights["MU5150"]),
-        "CA8387": ("CA8387 国航(大兴)", flights["CA8387"]),
-        "CA1541": ("CA1541 国航(首都)", flights["CA1541"]),
-        "CA1535": ("CA1535 国航(首都)", flights["CA1535"]),
-    }
-    dep_codes = ["KN5996", "MU5150"]
-    ret_codes = ["CA8387", "CA1541", "CA1535"]
-    dep_rows = ""
-    for c in dep_codes:
-        label, (price, trend) = fmap[c]
-        mut = flight_mut(trend)
-        color = ' style="color:#2e7d54"' if (trend and trend[0] == "↓") else ""
-        dep_rows += f'        <tr><td>{label}</td><td class="pri">¥{price}</td><td class="mut"{color}>{mut}</td></tr>\n'
-    ret_rows = ""
-    for c in ret_codes:
-        label, (price, trend) = fmap[c]
-        mut = flight_mut(trend)
-        color = ' style="color:#c0392b"' if (trend and trend[0] == "↑") else ""
-        ret_rows += f'        <tr><td>{label}</td><td class="pri">¥{price}</td><td class="mut"{color}>{mut}</td></tr>\n'
+    # 机票卡片见下方「已购机票」区块（固定内容，不再解析价格）
 
     # 酒店行
     spec = hotels[:4]
@@ -253,19 +200,20 @@ def build_mobile_view(flights, wh, hotels, budget):
     </a>
 
     <a class="mcard" style="--mc:#2E8B57" href="beijing-2026-myflights.html">
-      <div class="mhead"><span class="lt"><span class="dot" style="background:#2E8B57"></span>机票价格（指定5航班）</span><span class="go">完整详情 ↗</span></div>
+      <div class="mhead"><span class="lt"><span class="dot" style="background:#2E8B57"></span>已购机票（往返）</span><span class="go">完整详情 ↗</span></div>
       <table class="mtbl">
-        <tr class="sec"><td colspan="3">去程 8/15 宁波→北京（大兴）· {trend_label(dep_codes, flights)}</td></tr>
-{dep_rows}        <tr class="sec"><td colspan="3">回程 8/22 北京→宁波 · {trend_label(ret_codes, flights)}</td></tr>
-{ret_rows}      </table>
+        <tr><td>去程 8/15</td><td class="pri">KN5996</td><td class="mut">宁波→北京·大兴</td></tr>
+        <tr><td>回程 8/22</td><td class="pri">CA8387</td><td class="mut">北京→宁波·大兴</td></tr>
+        <tr class="sec"><td colspan="3">已购 · 实付 ¥6248（携程·含税）</td></tr>
+      </table>
     </a>
 
     <a class="mcard" style="--mc:#7c3aed" href="beijing-2026-budget.html">
       <div class="mhead"><span class="lt"><span class="dot" style="background:#7c3aed"></span>旅游预算总览</span><span class="go">完整明细 ↗</span></div>
       <table class="mtbl">
         <tr><td>总预算（估）</td><td class="pri">¥{budget}</td><td class="mut">含机建燃油</td></tr>
-        <tr><td>机票</td><td>¥7410</td><td class="mut">往返·含税</td></tr>
-        <tr><td>酒店</td><td>¥6114</td><td class="mut">6晚·待付</td></tr>
+        <tr><td>机票</td><td>¥6248</td><td class="mut">往返·已付·携程</td></tr>
+        <tr><td>酒店</td><td>¥6114</td><td class="mut">6晚·已付·同程</td></tr>
         <tr><td>餐饮+门票+缆车+包车+接送</td><td>¥4495.5</td><td class="mut">特色餐/景点/缆车/车/接送</td></tr>
       </table>
     </a>'''
@@ -277,13 +225,9 @@ def main():
         print("[ERROR] dashboard 未找到同步锚点，跳过。")
         return 1
 
-    flights = parse_flights(read(FLIGHTS))
     wh = parse_weather(read(WEATHER))
     hotels = parse_hotels(read(HOTELS))
     budget = parse_budget(read(BUDGET))
-    if flights is None:
-        print("[ERROR] 机票页解析失败，跳过写入。")
-        return 1
     if wh is None:
         print("[ERROR] 天气页解析失败，跳过写入。")
         return 1
@@ -294,7 +238,7 @@ def main():
         print("[ERROR] 预算页解析失败，跳过写入。")
         return 1
 
-    new_block = build_mobile_view(flights, wh, hotels, budget)
+    new_block = build_mobile_view(wh, hotels, budget)
     pre = dash.split(START, 1)[1]
     old_block = pre.split(END, 1)[0]
     if old_block.strip() == new_block.strip():
@@ -306,8 +250,7 @@ def main():
         f.write(new_dash)
 
     # 输出同步摘要
-    fv = " | ".join(f"{c}¥{flights[c][0]}" for c in ["KN5996", "MU5150", "CA8387", "CA1541", "CA1535"])
-    print(f"[SYNC] 机票: {fv}")
+    print(f"[SYNC] 机票: 已购 ¥6248（携程·KN5996/CA8387）")
     print(f"[SYNC] 天气: 今日{wh[0]}℃/{wh[1]}℃ 雨{wh[2]}mm({rain_level(wh[2])}) 7月累计~{wh[3]}mm")
     print(f"[SYNC] 酒店: 东方{hotels[0]} 康福瑞{hotels[4]} 如家{hotels[5]} 汉庭{hotels[6]}")
     print(f"[SYNC] 预算总额: ¥{budget}")

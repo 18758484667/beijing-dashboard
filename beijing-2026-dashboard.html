@@ -70,7 +70,7 @@
   <header>
     <h1>北京之行 · 每日看板</h1>
     <div class="date" id="today"></div>
-    <p class="sub">指定酒店价/每日推荐 · 景点预约 · 天气/降雨量 · 机票价格。手机端点击各模块进入完整详情页。均由每日 10:00 自动任务刷新。</p>
+    <p class="sub">指定酒店价/每日推荐 · 景点预约 · 天气/降雨量 · 已购机票。手机端点击各模块进入完整详情页。天气与酒店由每日 10:00 自动任务刷新；机票已购·停止追踪。</p>
   </header>
 
   <!-- ===== 移动端概览：表格卡片，点击跳转详情页 ===== -->
@@ -107,31 +107,27 @@
     <a class="mcard" style="--mc:#0EA5A4" href="beijing-2026-7-8-weather.html">
       <div class="mhead"><span class="lt"><span class="dot" style="background:#0EA5A4"></span>天气 / 降雨量</span><span class="go">完整详情 ↗</span></div>
       <table class="mtbl">
-        <tr><td>今日8/4</td><td class="pri">33℃/26℃</td><td class="mut">无雨·晴</td></tr>
+        <tr><td>今日8/5</td><td class="pri">35℃/27℃</td><td class="mut">无雨·晴</td></tr>
         <tr><td>7–8月累计</td><td>~1306mm</td><td class="mut">实况+预报</td></tr>
         <tr><td>8月展望</td><td>雨季</td><td class="mut">伞随身·防短时暴雨</td></tr>
       </table>
     </a>
 
     <a class="mcard" style="--mc:#2E8B57" href="beijing-2026-myflights.html">
-      <div class="mhead"><span class="lt"><span class="dot" style="background:#2E8B57"></span>机票价格（指定5航班）</span><span class="go">完整详情 ↗</span></div>
+      <div class="mhead"><span class="lt"><span class="dot" style="background:#2E8B57"></span>已购机票（往返）</span><span class="go">完整详情 ↗</span></div>
       <table class="mtbl">
-        <tr class="sec"><td colspan="3">去程 8/15 宁波→北京（大兴）· ↑全线涨价</td></tr>
-        <tr><td>KN5996 中联航</td><td class="pri">¥690</td><td class="mut">↑涨¥150·✓确认</td></tr>
-        <tr><td>MU5150 东航</td><td class="pri">¥750</td><td class="mut">↑涨¥10·✓确认</td></tr>
-        <tr class="sec"><td colspan="3">回程 8/22 北京→宁波 · 持平·✓确认</td></tr>
-        <tr><td>CA8387 国航(大兴)</td><td class="pri">¥460</td><td class="mut">✓确认</td></tr>
-        <tr><td>CA1541 国航(首都)</td><td class="pri">¥700</td><td class="mut">✓确认</td></tr>
-        <tr><td>CA1535 国航(首都)</td><td class="pri">¥700</td><td class="mut">✓确认</td></tr>
+        <tr><td>去程 8/15</td><td class="pri">KN5996</td><td class="mut">宁波→北京·大兴</td></tr>
+        <tr><td>回程 8/22</td><td class="pri">CA8387</td><td class="mut">北京→宁波·大兴</td></tr>
+        <tr class="sec"><td colspan="3">已购 · 实付 ¥6248（携程·含税）</td></tr>
       </table>
     </a>
 
     <a class="mcard" style="--mc:#7c3aed" href="beijing-2026-budget.html">
       <div class="mhead"><span class="lt"><span class="dot" style="background:#7c3aed"></span>旅游预算总览</span><span class="go">完整明细 ↗</span></div>
       <table class="mtbl">
-        <tr><td>总预算（估）</td><td class="pri">¥18,020</td><td class="mut">含机建燃油</td></tr>
-        <tr><td>机票</td><td>¥7410</td><td class="mut">往返·含税</td></tr>
-        <tr><td>酒店</td><td>¥6114</td><td class="mut">6晚·待付</td></tr>
+        <tr><td>总预算（估）</td><td class="pri">¥16,858</td><td class="mut">含机建燃油</td></tr>
+        <tr><td>机票</td><td>¥6248</td><td class="mut">往返·已付·携程</td></tr>
+        <tr><td>酒店</td><td>¥6114</td><td class="mut">6晚·已付·同程</td></tr>
         <tr><td>餐饮+门票+缆车+包车+接送</td><td>¥4495.5</td><td class="mut">特色餐/景点/缆车/车/接送</td></tr>
       </table>
     </a>
@@ -201,7 +197,7 @@
 
   <div class="panel">
     <div class="bar">
-      <div class="t"><span class="dot" style="background:var(--green)"></span>机票价格（指定6航班）</div>
+      <div class="t"><span class="dot" style="background:var(--green)"></span>已购机票（往返）</div>
       <a href="beijing-2026-myflights.html" target="_blank">↗ 单独打开</a>
     </div>
     <iframe src="beijing-2026-myflights.html" style="height:920px" loading="lazy"></iframe>
@@ -220,7 +216,7 @@
   <footer>
     <div style="margin-bottom:8px;">
       <span class="tag">预约</span>每日 10:00 自动复核规则变动、刷新核验日期
-      <span class="tag">机票</span>每日 10:00 由自动化从同程刷新 6 指定航班
+      <span class="tag">机票</span>已购·携程实付¥6248·停止追踪
       <span class="tag">指定酒店/推荐</span>每日 10:00 自动更新真实价（聚合携程/同程索引价，旺季实际更高，以登录预订为准）
     </div>
   </footer>
