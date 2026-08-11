@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>北京之行 · 每日看板（酒店 / 天气 / 机票）</title>
+<title>北京之行 · 每日看板（天气 / 机票）</title>
 <style>
   :root{
     --bg:#F5F5F5; --card:#FFFFFF; --ink:#1A1A1A; --muted:#8A8A8A;
@@ -70,25 +70,13 @@
   <header>
     <h1>北京之行 · 每日看板</h1>
     <div class="date" id="today"></div>
-    <p class="sub">指定酒店价/每日推荐 · 景点预约 · 天气/降雨量 · 已购机票。手机端点击各模块进入完整详情页。天气与酒店由每日 10:00 自动任务刷新；机票已购·停止追踪。</p>
+    <p class="sub">景点预约 · 天气/降雨量 · 已购机票。手机端点击各模块进入完整详情页。天气由每日 10:00 自动任务刷新；机票已购·停止追踪。</p>
   </header>
 
   <!-- ===== 移动端概览：表格卡片，点击跳转详情页 ===== -->
   <div class="mobile-view">
   <!-- MOBILE-VIEW-START -->
-    <a class="mcard" style="--mc:#FF5C1A" href="beijing-2026-hotels-spec.html">
-      <div class="mhead"><span class="lt"><span class="dot" style="background:#FF5C1A"></span>指定酒店 + 每日推荐</span><span class="go">完整详情 ↗</span></div>
-      <table class="mtbl">
-        <tr><td>东方饭店</td><td class="pri">¥502–550起</td><td class="mut">前门·虎坊桥530m·洗衣✓</td></tr>
-        <tr><td>京伦饭店</td><td>¥498参考</td><td class="mut">国贸</td></tr>
-        <tr><td>国际艺苑</td><td>¥620–710</td><td class="mut">王府井</td></tr>
-        <tr><td>金龙温泉</td><td>¥500–590</td><td class="mut">建国门·含私汤</td></tr>
-        <tr class="sec"><td colspan="3">每日推荐（洗衣·床1.2m·近地铁·近前门牛街·400–600）</td></tr>
-        <tr><td>康福瑞</td><td class="pri">¥450–485起</td><td class="mut">牛街370m·洗衣✓·早餐优</td></tr>
-        <tr><td>如家neo前门</td><td>¥553–675</td><td class="mut">珠市口220m</td></tr>
-        <tr><td>汉庭宣武门</td><td>¥520–530起</td><td class="mut">菜市口470m</td></tr>
-      </table>
-    </a>
+    <a class="mcard" style="--mc:#2E86DE" href="beijing-2026-booking.html">
 
     <a class="mcard" style="--mc:#2E86DE" href="beijing-2026-booking.html">
       <div class="mhead"><span class="lt"><span class="dot" style="background:#2E86DE"></span>景点预约时间表</span><span class="go">完整详情 ↗</span></div>
@@ -125,7 +113,6 @@
     <a class="mcard" style="--mc:#7c3aed" href="beijing-2026-budget.html">
       <div class="mhead"><span class="lt"><span class="dot" style="background:#7c3aed"></span>旅游预算总览</span><span class="go">完整明细 ↗</span></div>
       <table class="mtbl">
-        <tr><td>🏨 酒店</td><td class="pri">¥6114</td><td class="mut">同程</td></tr>
         <tr><td>✈️ 机票</td><td class="pri">¥6248</td><td class="mut">携程</td></tr>
         <tr><td>🚐 包车</td><td class="pri">¥598</td><td class="mut">抖音</td></tr>
         <tr><td>🚗 接送机</td><td class="pri">¥600</td><td class="mut">—</td></tr>
@@ -134,7 +121,7 @@
         <tr><td>🍜 餐饮</td><td class="pri">¥2200</td><td class="mut">—</td></tr>
         <tr><td>🚇 其他交通</td><td class="pri">¥0</td><td class="mut">—</td></tr>
         <tr class="sec"><td colspan="3">总预算（估）</td></tr>
-        <tr><td><b>合计</b></td><td class="pri">¥16,858</td><td class="mut">人均¥2,810</td></tr>
+        <tr><td><b>合计</b></td><td class="pri">¥10,744</td><td class="mut">人均约 ¥1,791（按6人） · ¥2,149（按5个全人）</td></tr>
       </table>
     </a>
   <!-- MOBILE-VIEW-END -->
@@ -176,15 +163,6 @@
   <!-- ===== 桌面端 panel（iframe 全展开） ===== -->
   <div class="panel">
     <div class="bar">
-      <div class="t"><span class="dot" style="background:var(--accent)"></span>指定酒店价 + 每日推荐</div>
-      <a href="beijing-2026-hotels-spec.html" target="_blank">↗ 单独打开</a>
-    </div>
-    <iframe src="beijing-2026-hotels-spec.html" style="height:820px" loading="lazy"></iframe>
-    <div class="fallback">内嵌未显示？<a href="beijing-2026-hotels-spec.html" target="_blank">点此单独打开指定酒店/推荐页</a></div>
-  </div>
-
-  <div class="panel">
-    <div class="bar">
       <div class="t"><span class="dot" style="background:var(--cool)"></span>景点预约时间表</div>
       <a href="beijing-2026-booking.html" target="_blank">↗ 单独打开</a>
     </div>
@@ -223,7 +201,6 @@
     <div style="margin-bottom:8px;">
       <span class="tag">预约</span>每日 10:00 自动复核规则变动、刷新核验日期
       <span class="tag">机票</span>已购·携程实付¥6248·停止追踪
-      <span class="tag">指定酒店/推荐</span>每日 10:00 自动更新真实价（聚合携程/同程索引价，旺季实际更高，以登录预订为准）
     </div>
   </footer>
 </div>

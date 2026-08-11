@@ -19,7 +19,6 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 DASH = os.path.join(BASE, "beijing-2026-dashboard.html")
 FLIGHTS = os.path.join(BASE, "beijing-2026-myflights.html")
 WEATHER = os.path.join(BASE, "beijing-2026-7-8-weather.html")
-HOTELS = os.path.join(BASE, "beijing-2026-hotels-spec.html")
 BUDGET = os.path.join(BASE, "beijing-2026-budget.html")
 
 START = "<!-- MOBILE-VIEW-START -->"
@@ -96,39 +95,18 @@ def parse_weather(html):
     return (hi_t, lo_t, prec_t, total)
 
 
-# ---------------- 酒店 ----------------
-def clean_price(t):
-    t2 = t.replace("双床房", "").replace("约", "").strip()
-    m = re.search(r"¥(\d+)(?:[–-](\d+))?", t2)
-    if not m:
-        return t2
-    lo = m.group(1)
-    hi = m.group(2)
-    ref = "参考" if "参考" in t2 else ""
-    if hi:
-        return f"¥{lo}–{hi}{'起' if '起' in t2 else ''}{ref}"
-    if ref:
-        return f"¥{lo}{ref}"
-    return f"¥{lo}{'起' if '起' in t2 else ''}"
-
-
-def parse_hotels(html):
-    spec = re.findall(r'<span class="price">([^<]*)</span>', html)
-    reco = re.findall(r'<div class="price">([^<]*)<span', html)
-    if len(spec) < 4 or len(reco) < 3:
-        return None
-    spec_c = [clean_price(x) for x in spec[:4]]
-    reco_c = [clean_price(x) for x in reco[:3]]
-    return spec_c + reco_c  # [东方,京伦,国际艺苑,金龙, 康福瑞,如家neo,汉庭]
+# ---------------- 酒店 ---------------- （已移除：酒店模块不再展示，删除 hotels-spec.html）
 
 
 # ---------------- 预算 ----------------
 def parse_budget(html):
-    """返回 (总额字符串, [(项目,金额,购买途径), ...])，失败返回 None。"""
+    """返回 (总额字符串, 人均字符串, [(项目,金额,购买途径), ...])，失败返回 None。"""
     m = re.search(r'<b id="budgetTotal">¥([\d,]+)</b>', html)
     if not m:
         return None
     total = m.group(1)
+    m2 = re.search(r'<div class="t-per">([^<]*)</div>', html)
+    per = m2.group(1).strip() if m2 else ""
     sec = re.search(r'📊 预算汇总.*?<tbody>(.*?)</tbody>', html, re.S)
     rows = []
     if sec:
@@ -137,12 +115,12 @@ def parse_budget(html):
             rows.append((rm.group(1).strip(), rm.group(2).strip(), rm.group(3).strip()))
     if not rows:
         return None
-    return (total, rows)
+    return (total, per, rows)
 
 
 # ---------------- 组装 mobile-view ----------------
-def build_mobile_view(wh, hotels, budget):
-    budget_total, budget_rows = budget
+def build_mobile_view(wh, budget):
+    budget_total, budget_per, budget_rows = budget
     today = datetime.date.today()
     today_label = f"今日{today.month}/{today.day}"
     hi_t, lo_t, prec_t, total = wh
@@ -161,35 +139,7 @@ def build_mobile_view(wh, hotels, budget):
     for _lbl, _amt, _ch in budget_rows:
         budget_rows_html += f'        <tr><td>{_lbl}</td><td class="pri">¥{_amt}</td><td class="mut">{_ch}</td></tr>\n'
 
-    # 酒店行
-    spec = hotels[:4]
-    reco = hotels[4:7]
-    hotel_notes = {
-        "东方饭店": "前门·虎坊桥530m·洗衣✓",
-        "京伦饭店": "国贸",
-        "国际艺苑": "王府井",
-        "金龙温泉": "建国门·含私汤",
-        "康福瑞": "牛街370m·洗衣✓·早餐优",
-        "如家neo前门": "珠市口220m",
-        "汉庭宣武门": "菜市口470m",
-    }
-    pri_set = {"东方饭店", "康福瑞"}
-    hotel_rows = ""
-    spec_labels = ["东方饭店", "京伦饭店", "国际艺苑", "金龙温泉"]
-    for lbl, price in zip(spec_labels, spec):
-        cls = ' class="pri"' if lbl in pri_set else ""
-        hotel_rows += f'        <tr><td>{lbl}</td><td{cls}>{price}</td><td class="mut">{hotel_notes[lbl]}</td></tr>\n'
-    hotel_rows += '        <tr class="sec"><td colspan="3">每日推荐（洗衣·床1.2m·近地铁·近前门牛街·400–600）</td></tr>\n'
-    reco_labels = ["康福瑞", "如家neo前门", "汉庭宣武门"]
-    for lbl, price in zip(reco_labels, reco):
-        cls = ' class="pri"' if lbl in pri_set else ""
-        hotel_rows += f'        <tr><td>{lbl}</td><td{cls}>{price}</td><td class="mut">{hotel_notes[lbl]}</td></tr>\n'
-
-    return f'''    <a class="mcard" style="--mc:#FF5C1A" href="beijing-2026-hotels-spec.html">
-      <div class="mhead"><span class="lt"><span class="dot" style="background:#FF5C1A"></span>指定酒店 + 每日推荐</span><span class="go">完整详情 ↗</span></div>
-      <table class="mtbl">
-{hotel_rows}      </table>
-    </a>
+    return f'''    <a class="mcard" style="--mc:#2E86DE" href="beijing-2026-booking.html">
 
     <a class="mcard" style="--mc:#2E86DE" href="beijing-2026-booking.html">
       <div class="mhead"><span class="lt"><span class="dot" style="background:#2E86DE"></span>景点预约时间表</span><span class="go">完整详情 ↗</span></div>
@@ -227,7 +177,7 @@ def build_mobile_view(wh, hotels, budget):
       <div class="mhead"><span class="lt"><span class="dot" style="background:#7c3aed"></span>旅游预算总览</span><span class="go">完整明细 ↗</span></div>
       <table class="mtbl">
 {budget_rows_html}        <tr class="sec"><td colspan="3">总预算（估）</td></tr>
-        <tr><td><b>合计</b></td><td class="pri">¥{budget_total}</td><td class="mut">人均¥2,810</td></tr>
+        <tr><td><b>合计</b></td><td class="pri">¥{budget_total}</td><td class="mut">{budget_per}</td></tr>
       </table>
     </a>'''
 
@@ -239,19 +189,15 @@ def main():
         return 1
 
     wh = parse_weather(read(WEATHER))
-    hotels = parse_hotels(read(HOTELS))
     budget = parse_budget(read(BUDGET))
     if wh is None:
         print("[ERROR] 天气页解析失败，跳过写入。")
-        return 1
-    if hotels is None:
-        print("[ERROR] 酒店页解析失败，跳过写入。")
         return 1
     if budget is None:
         print("[ERROR] 预算页解析失败，跳过写入。")
         return 1
 
-    new_block = build_mobile_view(wh, hotels, budget)
+    new_block = build_mobile_view(wh, budget)
     pre = dash.split(START, 1)[1]
     old_block = pre.split(END, 1)[0]
     if old_block.strip() == new_block.strip():
@@ -265,7 +211,6 @@ def main():
     # 输出同步摘要
     print(f"[SYNC] 机票: 已购 ¥6248（携程·CA1542/CA8387）")
     print(f"[SYNC] 天气: 今日{wh[0]}℃/{wh[1]}℃ 雨{wh[2]}mm({rain_level(wh[2])}) 7月累计~{wh[3]}mm")
-    print(f"[SYNC] 酒店: 东方{hotels[0]} 康福瑞{hotels[4]} 如家{hotels[5]} 汉庭{hotels[6]}")
     print(f"[SYNC] 预算总额: ¥{budget[0]}")
     print("[DONE] 已重写首页 mobile-view 概览表格。")
     return 0
