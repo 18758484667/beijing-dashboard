@@ -54,20 +54,18 @@
 <body>
 <div class="wrap">
   <h1>北京降雨量预测 · 2026年7–8月</h1>
-  <div class="sub"><strong>7/1–8/4 实况</strong>（tianqi24/天气后报，累计约1301mm；7/30–8/2 雨量按雷阵雨强度估算，无逐毫米实测）→ <strong>8/5–8/7 短期预报</strong>（tianqi.com）→ <strong>8/8–8/18 15天预报</strong>（tianqi24，可靠；含行程期 8/15–17）→ <strong>8/19–9/12 统计外推</strong>（2025模式缩放，非真实预报）。注：7/10 雨量经源站修订为 139.75mm；7/20 单日暴雨 153.48mm、7/26 为 53.73mm；8/4 截至上午降雨 0.1mm（午后雷电蓝警·雷阵雨）。</div>
+  <div class="sub"><strong>7/1–8/10 实况</strong>（tianqi24/天气后报，累计约1327mm；7/30–8/2 雨量为雷阵雨强度估算，无逐毫米实测）→ <strong>8/11–8/25 15天预报</strong>（tianqi24，可靠；含行程期 8/15–22）。注：7/10 雨量经源站修订为 139.75mm；7/20 单日暴雨 153.48mm、7/26 为 53.73mm；8/7 雷阵雨约25mm（估算）。</div>
 
   <div class="zone-badge">
-    <div class="badge"><span class="sw" style="background:var(--act)"></span> 实况 7/1–8/4</div>
-    <div class="badge"><span class="sw" style="background:var(--fcst)"></span> 短期预报 8/5–8/7</div>
-    <div class="badge"><span class="sw" style="background:var(--ref);border:1px dashed #999"></span> 15天预报 8/8–8/18</div>
-    <div class="badge"><span class="sw" style="background:var(--stat);border:1px dashed #CCC"></span> 统计外推 8/19–9/12</div>
+    <div class="badge"><span class="sw" style="background:var(--act)"></span> 实况 7/1–8/10</div>
+    <div class="badge"><span class="sw" style="background:var(--fcst)"></span> 15天预报 8/11–8/25</div>
   </div>
 
   <div class="stats">
-    <div class="stat"><div class="k">7/1–8/4 实况降雨</div><div class="v">1301<small>mm</small></div></div>
-    <div class="stat"><div class="k">8/5–8/7 预报降雨</div><div class="v">~25<small>mm</small></div></div>
-    <div class="stat"><div class="k">7–8月 累计</div><div class="v">~1306<small>mm</small></div></div>
-    <div class="stat"><div class="k">8月至今(1–4日)</div><div class="v">84<small>mm</small></div></div>
+    <div class="stat"><div class="k">7/1–8/10 实况降雨</div><div class="v">~1327<small>mm</small></div></div>
+    <div class="stat"><div class="k">8/11–8/25 预报降雨</div><div class="v">~126<small>mm</small></div></div>
+    <div class="stat"><div class="k">7–8月 累计</div><div class="v">~1453<small>mm</small></div></div>
+    <div class="stat"><div class="k">8月至今(1–10日)</div><div class="v">~108<small>mm</small></div></div>
   </div>
 
   <div class="chart-card">
@@ -80,33 +78,31 @@
       <span><i style="background:var(--cool)"></i>最低气温</span>
       <span><span class="bar" style="background:var(--act)"></span>降雨(实况)</span>
       <span><span class="bar" style="background:var(--fcst)"></span>降雨(预报)</span>
-      <span><span class="bar" style="background:var(--ref)"></span>远期参考</span>
-      <span><span class="bar" style="background:var(--stat)"></span>统计外推</span>
     </div>
-    <div class="note">上图：气温（实况=实线，预报/参考/外推=虚线）。下图：降雨柱（深→浅=可信度递减）。<br>▸ 8/8–8/18 为 tianqi24 15天可靠预报（含行程期 8/15–17：8/15 小雨转阴、8/16 中雨、8/17 中雨转小雨，气温 21–34℃）。 ▸ 8/19–9/12 为 2025 同期模式 ×0.25 缩放，无预测意义。</div>
+    <div class="note">上图：气温（实况=实线，预报=虚线）。下图：降雨柱（深→浅=可信度递减）。<br>▸ 8/11–8/25 为 tianqi24 15天可靠预报（含行程期 8/15–22：8/15 小雨转中雨、8/16 多云转小雨、8/17 晴转中雨、8/18 小雨转晴，气温 21–31℃，多雨带伞）。</div>
   </div>
 </div>
 
 <script>
 // ===== 气温数据 =====
-const aHi=[36,37,37,37,34,35,34,34,35,30,30,29,34,34,35,34,31,32,33,32,32,29,29,32,33,34,34,34,34,33,33,34,33,33,33];
-const aLo=[22,24,26,25,24,22,23,24,26,25,25,25,25,26,25,26,24,23,24,23,24,23,23,24,25,26,26,27,28,25,25,25,25,27,26];
-const fHi=[35,35,33];
-const fLo=[27,28,27];
-const f2Hi=[31,30,31,31,32,34,32,33,32,32,34];
-const f2Lo=[25,22,21,23,24,24,25,23,24,23,24];
-const pHi=[31,31,34,34,32,31,30,32,32,30,33,32,27,32,31,33,29,27,33,32,23,28,28,30,31];
-const pLo=[24,24,24,25,25,23,23,24,25,25,25,25,25,25,25,24,22,22,23,22,21,23,21,23,23];
+const aHi=[36,37,37,37,34,35,34,34,35,30,30,29,34,34,35,34,31,32,33,32,32,29,29,32,33,34,34,34,34,33,33,34,33,33,33,35,35,35,31,31,33];
+const aLo=[22,24,26,25,24,22,23,24,26,25,25,25,25,26,25,26,24,23,24,23,24,23,23,24,25,26,26,27,28,25,25,25,25,27,26,25,26,23,21,21,24];
+const fHi=[33,26,25,27,29,31,31,29,30,30,33,31,33,33,31];
+const fLo=[26,24,23,21,21,21,23,23,23,23,24,24,24,22,21];
+const f2Hi=[];
+const f2Lo=[];
+const pHi=[];
+const pLo=[];
 const hi=aHi.concat(fHi,f2Hi,pHi), lo=aLo.concat(fLo,f2Lo,pLo);
 
 // ===== 降雨量 =====
-const aPrec=[6.14,0.90,52.63,76.00,76.00,2.60,41.27,15.43,36.35,139.75,303.25,48.65,0.05,0.82,0,0.74,36.86,45.33,12.16,153.48,2.37,18.36,25.15,5.06,12.91,53.73,0,0,5.47,18,28,22,35,26.94,0.1];
-const fPrec=[0,0,25];
-const f2Prec=[0,0,5,5,40,35,5,5,20,15,0];
-const pPrec=[3,3,0.2,0,0.5,30.7,2.2,19.7,4.3,5.2,1.1,0.2,26.6,10.5,10.2,1.1,1.4,0.2,0.3,3.9,50.7,0.3,0.3,0.1,12.8];
+const aPrec=[6.14,0.90,52.63,76.00,76.00,2.60,41.27,15.43,36.35,139.75,303.25,48.65,0.05,0.82,0,0.74,36.86,45.33,12.16,153.48,2.37,18.36,25.15,5.06,12.91,53.73,0,0,5.47,18,28,22,35,26.94,0.1,0,0,25,0,0,0];
+const fPrec=[15,35,8,10,18,6,15,5,6,0,0,0,0,8,0];
+const f2Prec=[];
+const pPrec=[];
 const prec=aPrec.concat(fPrec,f2Prec,pPrec);
 
-const zoneA=35, zoneB=38, zoneC=49, zoneD=74;
+const zoneA=41, zoneB=56, zoneC=56, zoneD=56;
 const N=prec.length;
 
 function zone(i){
@@ -159,7 +155,7 @@ for(let i=0;i<N;i+=5){
 if(45<N){svg.appendChild(el('line',{x1:X(45),y1:y0,x2:X(45),y2:pBase,stroke:'#FF5C1A','stroke-width':1.5,'stroke-dasharray':'5 3',opacity:.85}));const tl=el('text',{x:X(45),y:y0-26,'text-anchor':'middle','font-size':11,fill:'#FF5C1A','font-weight':700});tl.textContent='▶ 行程开始 8/15';svg.appendChild(tl);}
 
 // 月份标签
-[{x:X(15),t:'7月'},{x:X(46),t:'8月'},{x:X(67),t:'9月'}].forEach(l=>{const tx=el('text',{x:l.x,y:y0-6,'text-anchor':'middle','font-size':11,fill:'#1A1A1A','font-weight':600});tx.textContent=l.t;svg.appendChild(tx);});
+[{x:X(15),t:'7月'},{x:X(46),t:'8月'}].forEach(l=>{const tx=el('text',{x:l.x,y:y0-6,'text-anchor':'middle','font-size':11,fill:'#1A1A1A','font-weight':600});tx.textContent=l.t;svg.appendChild(tx);});
 svg.appendChild(el('line',{x1:X(30.5),y1:y0,x2:X(30.5),y2:pBase,stroke:'#CCC','stroke-width':1,'stroke-dasharray':'4 4'}));
 svg.appendChild(el('line',{x1:X(61.5),y1:y0,x2:X(61.5),y2:pBase,stroke:'#CCC','stroke-width':1,'stroke-dasharray':'4 4'}));
 
@@ -170,7 +166,7 @@ svg.appendChild(el('line',{x1:X(61.5),y1:y0,x2:X(61.5),y2:pBase,stroke:'#CCC','s
 });
 
 // 区域标签
-[{x:X(17),t:'实况',c:'#1B5E96'},{x:X(35),t:'预报',c:'#4A9ED6'},{x:X(44),t:'15天',c:'#999'},{x:X(62),t:'外推',c:'#BBB'}].forEach(l=>{
+[{x:X(18),t:'实况',c:'#1B5E96'},{x:X(50),t:'预报',c:'#4A9ED6'}].forEach(l=>{
   const tx=el('text',{x:l.x,y:y0-14,'text-anchor':'middle','font-size':10,fill:l.c});
   tx.textContent=l.t;svg.appendChild(tx);
 });
@@ -216,7 +212,7 @@ if(zoneA>0){
   const dot=el('circle',{cx:X(li),cy:yTop-4,r:4,fill:'#FF5C1A',stroke:'#fff','stroke-width':2});
   g.appendChild(dot);
   const lb=el('text',{x:X(li),y:yTop-11,'text-anchor':'middle','font-size':9,fill:'#FF5C1A','font-weight':700});
-  lb.textContent='今';g.appendChild(lb);
+  lb.textContent='实';g.appendChild(lb);
   svg.appendChild(g);
 }
 svg.appendChild(el('line',{x1:x0,y1:pBase,x2:x1,y2:pBase,stroke:'#2E86DE','stroke-width':1,opacity:.3}));
