@@ -167,8 +167,8 @@ def build_mobile_view(wh, budget):
     <a class="mcard" style="--mc:#2E8B57" href="beijing-2026-myflights.html">
       <div class="mhead"><span class="lt"><span class="dot" style="background:#2E8B57"></span>已购机票（往返）</span><span class="go">完整详情 ↗</span></div>
       <table class="mtbl">
-        <tr><td>去程 8/15</td><td class="pri">CA1542</td><td class="mut">宁波→北京·首都</td></tr>
-        <tr><td>回程 8/22</td><td class="pri">CA8387</td><td class="mut">北京→宁波·大兴</td></tr>
+        <tr><td>去程 8/15</td><td class="pri">CA1542</td><td class="mut">宁波→北京·首都 17:30→20:00</td></tr>
+        <tr><td>回程 8/22</td><td class="pri">KN5991</td><td class="mut">北京大兴→宁波 12:55→15:15</td></tr>
         <tr class="sec"><td colspan="3">已购 · 实付 ¥6248（携程·含税）</td></tr>
       </table>
     </a>
@@ -209,7 +209,7 @@ def main():
         f.write(new_dash)
 
     # 输出同步摘要
-    print(f"[SYNC] 机票: 已购 ¥6248（携程·CA1542/CA8387）")
+    print(f"[SYNC] 机票: 已购 ¥6248（携程·CA1542/KN5991）")
     print(f"[SYNC] 天气: 今日{wh[0]}℃/{wh[1]}℃ 雨{wh[2]}mm({rain_level(wh[2])}) 7月累计~{wh[3]}mm")
     print(f"[SYNC] 预算总额: ¥{budget[0]}")
     print("[DONE] 已重写首页 mobile-view 概览表格。")
