@@ -54,18 +54,18 @@
 <body>
 <div class="wrap">
   <h1>北京降雨量预测 · 2026年7–8月</h1>
-  <div class="sub"><strong>7/1–8/12 实况</strong>（tianqi24/天气后报，累计约1417mm；7/30–8/2 雨量为雷阵雨强度估算，无逐毫米实测；8/11–8/12 北京出现暴雨过程，全市平均50–80mm/日）→ <strong>8/13–8/26 14天预报</strong>（tianqi24，可靠；含行程期 8/15–22）。注：7/10 雨量经源站修订为 139.75mm；7/20 单日暴雨 153.48mm、7/26 为 53.73mm；8/7 雷阵雨约25mm（估算）。</div>
+  <div class="sub"><strong>7/1–8/13 实况</strong>（tianqi24/天气后报，累计约1429mm；7/30–8/2 雨量为雷阵雨强度估算，无逐毫米实测；8/11–8/12 北京出现暴雨过程，全市平均50–80mm/日，8/13 小雨）→ <strong>8/14–8/27 14天预报</strong>（tianqi24，可靠；含行程期 8/15–22）。注：7/10 雨量经源站修订为 139.75mm；7/20 单日暴雨 153.48mm、7/26 为 53.73mm；8/7 雷阵雨约25mm（估算）。</div>
 
   <div class="zone-badge">
-    <div class="badge"><span class="sw" style="background:var(--act)"></span> 实况 7/1–8/12</div>
-    <div class="badge"><span class="sw" style="background:var(--fcst)"></span> 预报 8/13–8/26（14天）</div>
+    <div class="badge"><span class="sw" style="background:var(--act)"></span> 实况 7/1–8/13</div>
+    <div class="badge"><span class="sw" style="background:var(--fcst)"></span> 预报 8/14–8/27（14天）</div>
   </div>
 
   <div class="stats">
-    <div class="stat"><div class="k">7/1–8/12 实况降雨</div><div class="v">~1417<small>mm</small></div></div>
-    <div class="stat"><div class="k">8/13–8/26 预报降雨</div><div class="v">~121<small>mm</small></div></div>
-    <div class="stat"><div class="k">7–8月 累计</div><div class="v">~1548<small>mm</small></div></div>
-    <div class="stat"><div class="k">8月至今(1–12日)</div><div class="v">~246<small>mm</small></div></div>
+    <div class="stat"><div class="k">7/1–8/13 实况降雨</div><div class="v">~1429<small>mm</small></div></div>
+    <div class="stat"><div class="k">8/14–8/27 预报降雨</div><div class="v">~96<small>mm</small></div></div>
+    <div class="stat"><div class="k">7月累计</div><div class="v">~1217<small>mm</small></div></div>
+    <div class="stat"><div class="k">8月至今(1–13日)</div><div class="v">~212<small>mm</small></div></div>
   </div>
 
   <div class="chart-card">
@@ -79,16 +79,16 @@
       <span><span class="bar" style="background:var(--act)"></span>降雨(实况)</span>
       <span><span class="bar" style="background:var(--fcst)"></span>降雨(预报)</span>
     </div>
-    <div class="note">上图：气温（实况=实线，预报=虚线）。下图：降雨柱（深→浅=可信度递减）。<br>▸ 8/13–8/26 为 tianqi24 14天可靠预报（含行程期 8/15–22：8/15 到京雷阵雨31/21、8/16 雷阵雨30/20、8/19 雨30/21、8/22 回程多云35/24高温，行程期多雨带伞；8/22 后转晴热）。</div>
+    <div class="note">上图：气温（实况=实线，预报=虚线）。下图：降雨柱（深→浅=可信度递减）。<br>▸ 8/14–8/27 为 tianqi24 14天可靠预报（含行程期 8/15–22：8/15 到京多云转小雨31/24、8/16 阴转多云31/23、8/19 晴转中雨31/22、8/22 回程多云转晴34/25；行程期仅 8/15 小雨、8/19 中雨，整体较前期预报转干，仍备伞；8/23–24 晴热36/35后转中雨）。</div>
   </div>
 </div>
 
 <script>
 // ===== 气温数据 =====
-const aHi=[36,37,37,37,34,35,34,34,35,30,30,29,34,34,35,34,31,32,33,32,32,29,29,32,33,34,34,34,34,33,33,34,33,33,33,35,35,35,31,31,33,33,27];
-const aLo=[22,24,26,25,24,22,23,24,26,25,25,25,25,26,25,26,24,23,24,23,24,23,23,24,25,26,26,27,28,25,25,25,25,27,26,25,26,23,21,21,24,24,23];
-const fHi=[29,31,31,30,31,31,30,31,33,35,34,34,34,33];
-const fLo=[23,23,21,20,21,21,21,22,23,24,24,24,25,24];
+const aHi=[36,37,37,37,34,35,34,34,35,30,30,29,34,34,35,34,31,32,33,32,32,29,29,32,33,34,34,34,34,33,33,34,33,33,33,35,35,35,31,31,33,33,27,30];
+const aLo=[22,24,26,25,24,22,23,24,26,25,25,25,25,26,25,26,24,23,24,23,24,23,23,24,25,26,26,27,28,25,25,25,25,27,26,25,26,23,21,21,24,24,23,23];
+const fHi=[32,31,31,34,30,31,32,34,34,36,35,35,28,31];
+const fLo=[24,24,23,23,23,22,23,24,25,25,25,25,24,22];
 const f2Hi=[];
 const f2Lo=[];
 const pHi=[];
@@ -96,13 +96,13 @@ const pLo=[];
 const hi=aHi.concat(fHi,f2Hi,pHi), lo=aLo.concat(fLo,f2Lo,pLo);
 
 // ===== 降雨量 =====
-const aPrec=[6.14,0.90,52.63,76.00,76.00,2.60,41.27,15.43,36.35,139.75,303.25,48.65,0.05,0.82,0,0.74,36.86,45.33,12.16,153.48,2.37,18.36,25.15,5.06,12.91,53.73,0,0,5.47,18,28,22,35,26.94,0.1,0,0,25,0,0,0,31,60];
-const fPrec=[12,8,25,20,5,8,20,6,0,0,0,6,8,3];
+const aPrec=[6.14,0.90,52.63,76.00,76.00,2.60,41.27,15.43,36.35,139.75,303.25,48.65,0.05,0.82,0,0.74,36.86,45.33,12.16,153.48,2.37,18.36,25.15,5.06,12.91,53.73,0,0,5.47,18,28,22,35,26.94,0.1,0,0,25,0,0,0,31,60,12];
+const fPrec=[0,8,3,0,0,20,0,0,0,0,10,30,25,0];
 const f2Prec=[];
 const pPrec=[];
 const prec=aPrec.concat(fPrec,f2Prec,pPrec);
 
-const zoneA=43, zoneB=57, zoneC=57, zoneD=57;
+const zoneA=44, zoneB=58, zoneC=58, zoneD=58;
 const N=prec.length;
 
 function zone(i){

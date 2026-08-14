@@ -90,7 +90,7 @@ def parse_weather(html):
     lo_t = int(round(lo[idx]))
     prec_t = int(round(prec[idx]))
 
-    m = re.search(r"7.{0,3}8月 累计</div><div class=\"v\">~?(\d+)<small>mm</small>", html)
+    m = re.search(r"7月累计</div><div class=\"v\">~?(\d+)<small>mm</small>", html)
     total = m.group(1) if m else "?"
     return (hi_t, lo_t, prec_t, total)
 
